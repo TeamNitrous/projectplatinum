@@ -1,0 +1,1832 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Project Platinum</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel='stylesheet' href='https://vjs.zencdn.net/5-unsafe/video-js.css'>
+    <script src="https://your-site-or-cdn.com/fontawesome/v6.1.1/js/all.js" data-auto-replace-svg="nest"></script>
+    <link rel="shortcut icon" href="https://pp.zombienw.com/scaledlogo.png" type="image/x-icon">
+    <!-- CSS -->
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap");
+    * {
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    html {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    :root {
+      --body-font: "Inter", sans-serif;
+      --theme-bg: #1f1d2b;
+      --body-color: #808191;
+      --button-bg: #353340;
+      --border-color: rgb(128 129 145 / 24%);
+      --video-bg: #252936;
+      --delay: 0s;
+    }
+
+    a{
+      text-decoration: none;
+      color: white;
+    }
+
+    body {
+      font-family: var(--body-font);
+      color: var(--body-color);
+      background-image: url("https://images.unsplash.com/photo-1445251836269-d158eaa028a6?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1951&q=80");
+      background-image: url(https://images.unsplash.com/photo-1520045892732-304bc3ac5d8e?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1950&q=80);
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-blend-mode: color-dodge;
+      background-color: rgba(18, 21, 39, 0.86);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 1em 2em;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+    body:before {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(163deg, #1f1d2b 21%, rgba(31, 29, 43, 0.3113620448) 64%);
+      opacity: 0.4;
+      content: "";
+    }
+
+    .container {
+      background-color: var(--theme-bg);
+      max-width: 1240px;
+      max-height: 900px;
+      height: 95vh;
+      display: flex;
+      overflow: hidden;
+      width: 100%;
+      border-radius: 20px;
+      font-size: 15px;
+      font-weight: 500;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+
+    .sidebar {
+      width: 220px;
+      height: 100%;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      transition-duration: 0.2s;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    .sidebar .logo {
+      display: none;
+      width: 30px;
+      height: 30px;
+      background-color: #22b07d;
+      flex-shrink: 0;
+      color: #fff;
+      align-items: center;
+      border-radius: 50%;
+      justify-content: center;
+    }
+    .sidebar .logo-expand {
+      text-decoration: none;
+      color: #fff;
+      font-size: 19px;
+      font-weight: 600;
+      line-height: 34px;
+      position: sticky;
+      top: 0;
+    }
+    .sidebar .logo-expand:before {
+      content: "";
+      position: absolute;
+      top: -30px;
+      left: 0;
+      background: var(--theme-bg);
+      width: 200px;
+      height: 70px;
+      z-index: -1;
+    }
+    .sidebar-link:hover, .sidebar-link.is-active {
+      color: #fff;
+      font-weight: 600;
+    }
+    .sidebar-link:hover:nth-child(2n+1) svg, .sidebar-link.is-active:nth-child(2n+1) svg {
+      background: #ff7551;
+    }
+    .sidebar-link:hover:nth-child(2n) svg, .sidebar-link.is-active:nth-child(2n) svg {
+      background: #32a7e2;
+    }
+    .sidebar-link:hover:nth-child(2n+3) svg, .sidebar-link.is-active:nth-child(2n+3) svg {
+      background: #6c5ecf;
+    }
+    .sidebar.collapse {
+      width: 90px;
+      border-right: 1px solid var(--border-color);
+    }
+    .sidebar.collapse .logo-expand,
+    .sidebar.collapse .side-title {
+      display: none;
+    }
+    .sidebar.collapse .logo {
+      display: flex;
+    }
+    .sidebar.collapse .side-wrapper {
+      width: 30px;
+    }
+    .sidebar.collapse .side-menu svg {
+      margin-right: 30px;
+    }
+
+    @-webkit-keyframes bottom {
+      0% {
+        transform: translateY(100px);
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @keyframes bottom {
+      0% {
+        transform: translateY(100px);
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+        transform: none;
+      }
+    }
+    .side-menu {
+      display: flex;
+      flex-direction: column;
+    }
+    .side-menu a {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: var(--body-color);
+    }
+    .side-menu a + a {
+      margin-top: 26px;
+    }
+    .side-menu svg {
+      width: 30px;
+      padding: 8px;
+      border-radius: 10px;
+      background-color: var(--button-bg);
+      flex-shrink: 0;
+      margin-right: 16px;
+    }
+    .side-menu svg:hover {
+      color: #fff;
+    }
+
+    .side-title {
+      font-size: 12px;
+      letter-spacing: 0.07em;
+      margin-bottom: 24px;
+    }
+
+    .side-wrapper {
+      border-bottom: 1px solid var(--border-color);
+      padding: 36px 0;
+      width: 145px;
+    }
+    .side-wrapper + .side-wrapper {
+      border-bottom: none;
+    }
+
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      padding: 30px;
+    }
+
+    .search-bar {
+      height: 34px;
+      display: flex;
+      width: 100%;
+      max-width: 450px;
+    }
+    .search-bar input {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background-color: var(--button-bg);
+      border-radius: 8px;
+      font-family: var(--body-font);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 0 40px 0 16px;
+      box-shadow: 0 0 0 2px rgba(134, 140, 160, 0.02);
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56.966 56.966' fill='%23717790c7'%3e%3cpath d='M55.146 51.887L41.588 37.786A22.926 22.926 0 0046.984 23c0-12.682-10.318-23-23-23s-23 10.318-23 23 10.318 23 23 23c4.761 0 9.298-1.436 13.177-4.162l13.661 14.208c.571.593 1.339.92 2.162.92.779 0 1.518-.297 2.079-.837a3.004 3.004 0 00.083-4.242zM23.984 6c9.374 0 17 7.626 17 17s-7.626 17-17 17-17-7.626-17-17 7.626-17 17-17z'/%3e%3c/svg%3e");
+      background-size: 14px;
+      background-repeat: no-repeat;
+      background-position: 96%;
+      color: #fff;
+    }
+
+    .user-settings {
+      display: flex;
+      align-items: center;
+      padding-left: 20px;
+      flex-shrink: 0;
+      margin-left: auto;
+    }
+    .user-settings svg {
+      width: 10px;
+      flex-shrink: 0;
+    }
+    @media screen and (max-width: 575px) {
+      .user-settings svg {
+        display: none;
+      }
+    }
+    .user-settings .notify {
+      position: relative;
+    }
+    .user-settings .notify svg {
+      width: 20px;
+      margin-left: 24px;
+      flex-shrink: 0;
+    }
+    .user-settings .notify .notification {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #ec5252;
+      position: absolute;
+      right: 1px;
+      border: 1px solid var(--theme-bg);
+      top: -2px;
+    }
+    @media screen and (max-width: 575px) {
+      .user-settings .notify .notification {
+        display: none;
+      }
+    }
+    .user-img {
+      width: 30px;
+      height: 30px;
+      flex-shrink: 0;
+      -o-object-fit: cover;
+        object-fit: cover;
+      border-radius: 50%;
+    }
+    .user-name {
+      color: #fff;
+      font-size: 14px;
+      margin: 0 6px 0 12px;
+    }
+    @media screen and (max-width: 575px) {
+      .user-name {
+        display: none;
+      }
+    }
+
+    .main-container {
+      display: flex;
+      flex-direction: column;
+      padding: 0 30px 30px;
+      flex-grow: 1;
+      overflow: auto;
+    }
+
+    .anim {
+      -webkit-animation: bottom 0.8s var(--delay) both;
+              animation: bottom 0.8s var(--delay) both;
+    }
+
+    .main-header {
+      font-size: 30px;
+      color: #fff;
+      font-weight: 700;
+      padding-bottom: 20px;
+      position: sticky;
+      top: 0;
+      left: 0;
+      background: linear-gradient(to bottom, #1f1d2b 0%, #1f1d2b 78%, rgba(31, 29, 43, 0) 100%);
+      z-index: 11;
+    }
+
+    .small-header {
+      font-size: 24px;
+      font-weight: 500;
+      color: #fff;
+      margin: 30px 0 20px;
+    }
+
+    .main-blogs {
+      display: flex;
+      align-items: center;
+    }
+    .main-blog__author {
+      display: flex;
+      align-items: center;
+      padding-bottom: 10px;
+    }
+    .main-blog__author.tips {
+      flex-direction: column-reverse;
+      align-items: flex-start;
+    }
+    .main-blog__title {
+      font-size: 25px;
+      max-width: 12ch;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: #fff;
+      margin-bottom: 75px;
+    }
+    .main-blog {
+      background-color: #31abbd;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      width: 65%;
+      padding: 30px;
+      border-radius: 20px;
+      align-self: stretch;
+      overflow: hidden;
+      position: relative;
+      transition: background 0.3s;
+      background-repeat: no-repeat;
+    }
+    .main-blog + .main-blog {
+      margin-left: 20px;
+      width: 35%;
+      background-position: center;
+    }
+    .home1{
+      background-image: url("https://github.com/TeamNitrous/projectplatinum/blob/main/assets/misc/papas-pizzeria.jpg?raw=true");
+    }
+    .home2{
+      background-image: url("https://github.com/TeamNitrous/projectplatinum/blob/main/assets/misc/mk64-hd-01.jpg?raw=true");
+    }
+    .flash1{
+      background-image: url("https://github.com/TeamNitrous/projectplatinum/blob/main/assets/misc/bloons-tower-defense-2.jpg?raw=true");
+    }
+    .flash2{
+      background-image: url("https://github.com/TeamNitrous/projectplatinum/blob/main/assets/misc/papas-pizzeria.jpg?raw=true");
+    }
+    .html1{
+      background-image: url("https://github.com/TeamNitrous/projectplatinum/blob/main/assets/misc/SFSHqWXvje8qzJ6GARdU9V.jpg?raw=true");
+    }
+    .html2{
+      background-image: url("https://github.com/TeamNitrous/projectplatinum/blob/main/assets/misc/tetris.png?raw=true");
+    }
+    .nes1{
+      background-image: url("https://github.com/TeamNitrous/projectplatinum/blob/main/assets/misc/NES-Contra.gif?raw=true");
+    }
+    .nes2{
+      background-image: url("https://github.com/TeamNitrous/projectplatinum/blob/main/assets/misc/515yYsRyIBL._AC_SX466_.jpg?raw=true");
+    }
+    .snes1{
+      background-image: url("https://github.com/TeamNitrous/projectplatinum/blob/main/assets/misc/Super-Mario-World-is-now-169.jpg?raw=true");
+    }
+    .snes2{
+      background-image: url("https://github.com/TeamNitrous/projectplatinum/blob/main/assets/misc/Super_Mario_Kart_screen_shot.jpg?raw=true");
+    }
+    .n641{
+      background-image: url("https://github.com/TeamNitrous/projectplatinum/blob/main/assets/misc/mk64-hd-01.jpg?raw=true");
+    }
+    .n642{
+      background-image: url("https://github.com/TeamNitrous/projectplatinum/blob/main/assets/misc/Smash-Bros-64-Thumbnail-1.webp?raw=true");
+    }
+    .genesis1{
+      background-image: url("https://github.com/TeamNitrous/projectplatinum/blob/main/assets/misc/DCQHRvJUGGGzMKjdiDj7PP.jpg?raw=true");
+    }
+    .genesis2{
+      background-image: url("https://github.com/TeamNitrous/projectplatinum/blob/main/assets/misc/hqdefault.jpg?raw=true");
+    }
+    .gameboy1{
+      background-image: url("https://github.com/TeamNitrous/projectplatinum/blob/main/assets/misc/pokemon_ruby_sapphire_anniversary_03.png?raw=true");
+    }
+    .gameboy2{
+      background-image: url("https://github.com/TeamNitrous/projectplatinum/blob/main/assets/misc/Splash_Bros_1.png?raw=true");
+    }
+    .scratch1{
+      background-image: url("https://github.com/TeamNitrous/projectplatinum/blob/main/assets/misc/images.jpg?raw=true");
+    }
+    .scratch2{
+      background-image: url("https://github.com/TeamNitrous/projectplatinum/blob/main/assets/misc/cover-1637317971947.avif?raw=true");
+    }
+    .main-blog + .main-blog .author-img {
+      border-color: rgba(255, 255, 255, 0.75);
+      margin-top: 14px;
+    }
+    .main-blog + .main-blog .author-img__wrapper svg {
+      border-color: #ffe6b2;
+      color: #e7bb7d;
+    }
+    .main-blog + .main-blog .author-detail {
+      margin-left: 0;
+    }
+    @media screen and (max-width: 905px) {
+      .main-blog, .main-blog + .main-blog {
+        width: 50%;
+        padding: 30px;
+      }
+      .main-blog {
+        background-size: cover;
+        background-position-x: center;
+        background-blend-mode: overlay;
+      }
+    }
+    .main-blog__time {
+      background: rgba(21, 13, 13, 0.44);
+      color: #fff;
+      padding: 3px 8px;
+      font-size: 12px;
+      border-radius: 6px;
+      position: absolute;
+      right: 20px;
+      bottom: 20px;
+    }
+
+    .author-img {
+      width: 52px;
+      height: 52px;
+      border: 1px solid rgba(255, 255, 255, 0.75);
+      padding: 4px;
+      border-radius: 50%;
+      -o-object-fit: cover;
+        object-fit: cover;
+    }
+    .author-img__wrapper {
+      position: relative;
+      flex-shrink: 0;
+    }
+    .author-img__wrapper svg {
+      width: 16px;
+      padding: 2px;
+      background-color: #fff;
+      color: #0daabc;
+      border-radius: 50%;
+      border: 2px solid #0daabc;
+      position: absolute;
+      bottom: 5px;
+      right: 0;
+    }
+    .author-name {
+      font-size: 15px;
+      color: #fff;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .author-info {
+      font-size: 13px;
+      font-weight: 400;
+      color: #fff;
+    }
+    .author-detail {
+      margin-left: 16px;
+    }
+
+    .seperate {
+      width: 3px;
+      height: 3px;
+      display: inline-block;
+      vertical-align: middle;
+      border-radius: 50%;
+      background-color: #fff;
+      margin: 0 6px;
+    }
+    .seperate.video-seperate {
+      background-color: var(--body-color);
+    }
+
+    .videos {
+      display: grid;
+      width: 100%;
+      grid-template-columns: repeat(4, 1fr);
+      grid-column-gap: 20px;
+      grid-row-gap: 20px;
+    }
+    @media screen and (max-width: 980px) {
+      .videos {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .video {
+      position: relative;
+      background-color: var(--video-bg);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: 0.4s;
+    }
+    .video-wrapper {
+      position: relative;
+      height: 20vh;
+      background-size: cover;
+      background-position: center;
+    }
+    .video-name {
+      color: #fff;
+      font-size: 16px;
+      line-height: 1.4em;
+      padding: 12px 20px 0;
+      overflow: hidden;
+      background-color: var(--video-bg);
+      z-index: 9;
+      position: relative;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    .video-view {
+      font-size: 12px;
+      padding: 12px 20px 20px;
+      background-color: var(--video-bg);
+      position: relative;
+    }
+    .video-by {
+      transition: 0.3s;
+      padding: 20px 20px 0px;
+      display: inline-flex;
+      position: relative;
+    }
+    .video-by:before {
+      content: "";
+      background-color: #22b07d;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      position: absolute;
+      top: 26px;
+      right: 5px;
+    }
+    .video-by.offline:before {
+      background-color: #ff7551;
+    }
+    .video-time {
+      position: absolute;
+      background: rgba(21, 13, 13, 0.44);
+      color: rgba(255, 255, 255, 0.85);
+      padding: 3px 8px;
+      font-size: 12px;
+      border-radius: 6px;
+      top: 10px;
+      z-index: 1;
+      right: 8px;
+    }
+    .video:hover video {
+      transform: scale(1.6);
+      transform-origin: center;
+    }
+    .video:hover .video-time {
+      display: none;
+    }
+    .video:hover .video-author {
+      bottom: -65px;
+      transform: scale(0.6);
+      right: -3px;
+      z-index: 10;
+    }
+    .video:hover .video-by {
+      opacity: 0;
+    }
+    .video-author {
+      position: absolute;
+      right: 10px;
+      transition: 0.4s;
+      bottom: -25px;
+    }
+    .video-author svg {
+      background-color: #0aa0f7;
+      color: #fff;
+      border-color: var(--video-bg);
+    }
+
+    video {
+      max-width: 100%;
+      width: 100%;
+      border-radius: 20px 20px 0 0;
+      display: block;
+      cursor: pointer;
+      transition: 0.4s;
+    }
+
+    .stream-area {
+      display: none;
+    }
+    @media screen and (max-width: 940px) {
+      .stream-area {
+        flex-direction: column;
+      }
+      .stream-area .video-stream {
+        width: 100%;
+      }
+      .stream-area .chat-stream {
+        margin-left: 0;
+        margin-top: 30px;
+      }
+      .stream-area .video-js.vjs-fluid {
+        min-height: 250px;
+      }
+      .stream-area .msg__content {
+        max-width: 100%;
+      }
+    }
+
+    .show .stream-area {
+      display: flex;
+    }
+    .show .main-header,
+    .show .main-blogs,
+    .show .small-header,
+    .show .videos {
+      display: none;
+    }
+
+    .video-stream {
+      width: 65%;
+      -o-object-fit: cover;
+        object-fit: cover;
+      transition: 0.3s;
+    }
+    .video-stream:hover .video-js .vjs-big-play-button {
+      opacity: 1;
+    }
+
+    .video-p {
+      margin-right: 12px;
+      -o-object-fit: cover;
+        object-fit: cover;
+      flex-shrink: 0;
+      border-radius: 50%;
+      position: relative;
+      top: 0;
+      left: 0;
+    }
+    .video-p .author-img {
+      border: 0;
+    }
+    .video-p-wrapper {
+      display: flex;
+      align-items: center;
+    }
+    .video-p-wrapper .author-img {
+      border: 0;
+    }
+    .video-p-wrapper svg {
+      width: 20px;
+      padding: 4px;
+    }
+    @media screen and (max-width: 650px) {
+      .video-p-wrapper {
+        flex-direction: column;
+      }
+      .video-p-wrapper .button-wrapper {
+        margin: 20px auto 0;
+      }
+      .video-p-wrapper .video-p-detail {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .video-p-wrapper .video-p {
+        margin-right: 0;
+      }
+    }
+    .video-p-sub {
+      font-size: 12px;
+    }
+    .video-p-title {
+      font-size: 24px;
+      color: #fff;
+      line-height: 1.4em;
+      margin: 16px 0 20px;
+    }
+    .video-p-subtitle {
+      font-size: 14px;
+      line-height: 1.5em;
+      max-width: 60ch;
+    }
+    .video-p-subtitle + .video-p-subtitle {
+      margin-top: 16px;
+    }
+    .video-p-name {
+      margin-bottom: 8px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+    }
+    .video-p-name:after {
+      content: "";
+      width: 6px;
+      height: 6px;
+      background-color: #22b07d;
+      border-radius: 50%;
+      margin-left: 8px;
+      display: inline-block;
+    }
+    .video-p-name.offline:after {
+      background-color: #ff7551;
+    }
+
+    .video-content {
+      width: 100%;
+    }
+
+    .button-wrapper {
+      display: flex;
+      align-items: center;
+      margin-left: auto;
+    }
+
+    .like {
+      display: flex;
+      align-items: center;
+      background-color: var(--button-bg);
+      color: #fff;
+      border: 0;
+      font-family: var(--body-font);
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .like.red {
+      background-color: #ea5f5f;
+    }
+    .like svg {
+      width: 18px;
+      flex-shrink: 0;
+      margin-right: 10px;
+      padding: 0;
+    }
+    .like + .like {
+      margin-left: 16px;
+    }
+
+    .video-stats {
+      margin-left: 30px;
+    }
+
+    .video-detail {
+      display: flex;
+      margin-top: 30px;
+      width: 100%;
+    }
+
+    .chat-header {
+      display: flex;
+      align-items: center;
+      padding: 20px 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      position: sticky;
+      top: 0;
+      background-color: #252836;
+      left: 0;
+      z-index: 1;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .chat-header svg {
+      width: 15px;
+      margin-right: 6px;
+      flex-shrink: 0;
+    }
+    .chat-header span {
+      margin-left: auto;
+      color: var(--body-color);
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+    }
+
+    .chat-stream {
+      flex-grow: 1;
+      margin-left: 30px;
+    }
+
+    .chat {
+      background-color: #252836;
+      border-radius: 20px;
+      padding: 0 20px;
+      max-height: 414px;
+      overflow: auto;
+    }
+    .chat-footer {
+      display: flex;
+      align-items: center;
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      width: calc(100% + 20px);
+      padding-bottom: 12px;
+      background-color: #252836;
+    }
+    .chat-footer input {
+      width: 100%;
+      border: 0;
+      background-color: #2d303e;
+      border-radius: 20px;
+      font-size: 12px;
+      color: #fff;
+      margin-left: -10px;
+      padding: 12px 40px;
+      font-weight: 500;
+      font-family: var(--body-font);
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath fill-rule='evenodd' clip-rule='evenodd' d='M2 12C2 6.48 6.47 2 12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10C6.47 22 2 17.52 2 12zm5.52 1.2c-.66 0-1.2-.54-1.2-1.2 0-.66.54-1.2 1.2-1.2.66 0 1.19.54 1.19 1.2 0 .66-.53 1.2-1.19 1.2zM10.8 12c0 .66.54 1.2 1.2 1.2.66 0 1.19-.54 1.19-1.2a1.194 1.194 0 10-2.39 0zm4.48 0a1.195 1.195 0 102.39 0 1.194 1.194 0 10-2.39 0z' fill='%236c6e78'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-size: 24px;
+      background-position: 8px;
+    }
+    .chat-footer input::-moz-placeholder {
+      color: #6c6e78;
+    }
+    .chat-footer input:-ms-input-placeholder {
+      color: #6c6e78;
+    }
+    .chat-footer input::placeholder {
+      color: #6c6e78;
+    }
+    .chat-footer:before {
+      content: "";
+      position: absolute;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg viewBox='0 0 24 24' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M21.435 2.582a1.933 1.933 0 00-1.93-.503L3.408 6.759a1.92 1.92 0 00-1.384 1.522c-.142.75.355 1.704 1.003 2.102l5.033 3.094a1.304 1.304 0 001.61-.194l5.763-5.799a.734.734 0 011.06 0c.29.292.29.765 0 1.067l-5.773 5.8c-.428.43-.508 1.1-.193 1.62l3.075 5.083c.36.604.98.946 1.66.946.08 0 .17 0 .251-.01.78-.1 1.4-.634 1.63-1.39l4.773-16.075c.21-.685.02-1.43-.48-1.943z'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-size: 14px;
+      background-position: center;
+      width: 18px;
+      height: 18px;
+      background-color: #6c5ecf;
+      padding: 4px;
+      border-radius: 50%;
+      right: 16px;
+    }
+    .chat-vid__title {
+      color: #fff;
+      font-size: 18px;
+    }
+    .chat-vid__container {
+      margin-top: 40px;
+    }
+    .chat-vid__wrapper {
+      display: flex;
+      align-items: center;
+      margin-top: 26px;
+    }
+    .chat-vid__name {
+      color: #fff;
+      font-size: 14px;
+      line-height: 1.3em;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+    }
+    .chat-vid__img {
+      width: 100px;
+      height: 80px;
+      border-radius: 10px;
+      -o-object-fit: cover;
+        object-fit: cover;
+      -o-object-position: right;
+        object-position: right;
+      margin-right: 16px;
+      transition: 0.3s;
+    }
+    .chat-vid__img:hover {
+      transform: scale(1.02);
+    }
+    .chat-vid__content {
+      max-width: 20ch;
+    }
+    .chat-vid__by, .chat-vid__info {
+      color: var(--body-color);
+      font-size: 13px;
+    }
+    .chat-vid__by {
+      margin: 6px 0;
+    }
+    .chat-vid__button {
+      background-color: #6c5ecf;
+      border: 0;
+      color: #fff;
+      font-size: 13px;
+      margin-top: 26px;
+      display: flex;
+      padding: 0 10px;
+      align-items: center;
+      justify-content: center;
+      height: 40px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .chat-vid__button:hover {
+      background-color: #5847d0;
+    }
+
+    .message {
+      display: flex;
+      align-items: center;
+      margin-top: 18px;
+    }
+    .message:last-child {
+      margin-bottom: 18px;
+    }
+    .message-container .author-img__wrapper svg {
+      width: 15px;
+    }
+
+    .msg__name {
+      font-size: 13px;
+    }
+    .msg__content {
+      line-height: 1.4em;
+      max-width: 26ch;
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .video-js .vjs-control-bar {
+      display: flex;
+      align-items: center;
+    }
+
+    .vjs-poster {
+      background-size: 150%;
+    }
+
+    .video-js .vjs-control-bar {
+      width: 100%;
+      position: absolute;
+      bottom: 14px;
+      left: 14px;
+      width: calc(100% - 28px);
+      right: 0;
+      border-radius: 10px;
+      height: 4em;
+      background-color: #2b333f;
+      background-color: rgba(43, 51, 63, 0.7);
+    }
+    @media screen and (max-width: 625px) {
+      .video-js .vjs-control-bar {
+        padding-left: 0;
+      }
+    }
+
+    .video-js:hover .vjs-big-play-button {
+      background-color: rgba(43, 51, 63, 0.5);
+    }
+
+    .video-js .vjs-big-play-button {
+      transition: 0.3s;
+      opacity: 0;
+      border: 0;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .video-js .vjs-big-play-button:hover {
+      background-color: rgba(43, 51, 63, 0.7);
+      border-color: transparent;
+    }
+    @media screen and (max-width: 625px) {
+      .vjs-play-control:after {
+        display: none;
+      }
+    }
+
+    .vjs-menu-button-inline .vjs-menu {
+      top: 4px;
+    }
+
+    .video-js .vjs-control:before,
+    .video-js .vjs-time-control {
+      line-height: 40px;
+    }
+
+    .video-js .vjs-tech {
+      -o-object-fit: cover;
+        object-fit: cover;
+    }
+
+    .page{
+      width: 100%;
+      height: 100%;
+    }
+    .game{
+      width: 100%;
+      height: 100%;
+    }
+
+    button.vjs-play-control.vjs-control.vjs-button {
+      margin-left: 40px;
+    }
+    @media screen and (max-width: 625px) {
+      button.vjs-play-control.vjs-control.vjs-button {
+        margin-left: 0;
+      }
+    }
+
+    .vjs-icon-fullscreen-enter:before,
+    .video-js .vjs-fullscreen-control:before {
+      content: "";
+      position: absolute;
+      display: block;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='20' height='20' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath fill-rule='evenodd' clip-rule='evenodd' d='M2.54 0h3.38c1.41 0 2.54 1.15 2.54 2.561V5.97c0 1.42-1.13 2.56-2.54 2.56H2.54C1.14 8.53 0 7.39 0 5.97V2.561C0 1.15 1.14 0 2.54 0zm0 11.47h3.38c1.41 0 2.54 1.14 2.54 2.56v3.41c0 1.41-1.13 2.56-2.54 2.56H2.54C1.14 20 0 18.85 0 17.44v-3.41c0-1.42 1.14-2.56 2.54-2.56zM17.46 0h-3.38c-1.41 0-2.54 1.15-2.54 2.561V5.97c0 1.42 1.13 2.56 2.54 2.56h3.38c1.4 0 2.54-1.14 2.54-2.56V2.561C20 1.15 18.86 0 17.46 0zm-3.38 11.47h3.38c1.4 0 2.54 1.14 2.54 2.56v3.41c0 1.41-1.14 2.56-2.54 2.56h-3.38c-1.41 0-2.54-1.15-2.54-2.56v-3.41c0-1.42 1.13-2.56 2.54-2.56z' fill='%23fff'/%3e%3c/svg%3e");
+      background-size: 11px;
+      background-position: center;
+      background-position-y: 14px;
+      background-repeat: no-repeat;
+      opacity: 0.6;
+    }
+
+    .vjs-playback-rate .vjs-playback-rate-value {
+      font-size: 1.1em;
+      line-height: 3.5em;
+      opacity: 0.6;
+      font-weight: 700;
+      font-family: var(--body-font);
+    }
+
+    .video-js .vjs-playback-rate {
+      width: 2.2em;
+    }
+
+    .video-js.vjs-fluid {
+      border-radius: 20px;
+      overflow: hidden;
+      min-height: 414px;
+    }
+
+    @media screen and (max-width: 735px) {
+      .main-blogs {
+        flex-wrap: wrap;
+      }
+
+      .main-blog,
+    .main-blog + .main-blog {
+        width: 100%;
+      }
+
+      .videos {
+        grid-template-columns: 1fr;
+      }
+
+      .main-blog + .main-blog {
+        margin-left: 0;
+        margin-top: 20px;
+        background-size: cover;
+      }
+    }
+    @media screen and (max-width: 475px) {
+      .main-blog__title {
+        font-size: 20px;
+      }
+
+      .author-name {
+        font-size: 14px;
+      }
+
+      .main-blog__author {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+      }
+
+      .author-detail {
+        margin-left: 0;
+      }
+
+      .main-blog .author-img {
+        margin-top: 14px;
+      }
+
+      .main-container {
+        padding: 0 20px 20px;
+      }
+
+      .header {
+        padding: 20px;
+      }
+
+      .sidebar.collapse {
+        width: 40px;
+      }
+
+      .sidebar {
+        align-items: center;
+      }
+
+      body {
+        padding: 0;
+      }
+
+      .container {
+        height: 100vh;
+        border-radius: 0;
+        max-height: 100%;
+      }
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: rgba(21, 20, 26, 0.63);
+      border-radius: 10px;
+    }
+
+    .game-page{
+      text-align: center;
+    }
+    </style>
+  </head>
+
+  <body>
+    <!-- partial:index.partial.html -->
+    <div class="container">
+    <!-- Side Bar -->
+    <div class="sidebar">
+      <span class="logo">S</span>
+      <a class="logo-expand" href="#">Project Platinum Version 1.3</a>
+      
+      <div class="side-wrapper">
+      <div class="side-title">MENU</div>
+      <div class="side-menu">
+        <a class="sidebar-link home is-active" href="#">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M9.135 20.773v-3.057c0-.78.637-1.414 1.423-1.414h2.875c.377 0 .74.15 1.006.414.267.265.417.625.417 1v3.057c-.002.325.126.637.356.867.23.23.544.36.87.36h1.962a3.46 3.46 0 002.443-1 3.41 3.41 0 001.013-2.422V9.867c0-.735-.328-1.431-.895-1.902l-6.671-5.29a3.097 3.097 0 00-3.949.072L3.467 7.965A2.474 2.474 0 002.5 9.867v8.702C2.5 20.464 4.047 22 5.956 22h1.916c.68 0 1.231-.544 1.236-1.218l.027-.009z" />
+          </svg>
+          Home
+        </a>
+        <a class="sidebar-link flash" href="#">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M 10.439 13.029 L 10.439 11.501 C 10.439 11.388 10.403 11.297 10.328 11.226 C 10.254 11.154 10.161 11.117 10.046 11.117 L 7.686 11.117 L 7.686 8.823 C 7.686 8.712 7.649 8.62 7.576 8.549 C 7.501 8.477 7.408 8.441 7.292 8.441 L 5.719 8.441 C 5.605 8.441 5.51 8.477 5.437 8.549 C 5.364 8.62 5.326 8.712 5.326 8.823 L 5.326 11.117 L 2.968 11.117 C 2.852 11.117 2.759 11.154 2.684 11.226 C 2.611 11.297 2.574 11.388 2.574 11.501 L 2.574 13.029 C 2.574 13.142 2.611 13.234 2.684 13.305 C 2.759 13.375 2.852 13.413 2.968 13.413 L 5.326 13.413 L 5.326 15.705 C 5.326 15.818 5.364 15.91 5.437 15.981 C 5.51 16.052 5.605 16.089 5.719 16.089 L 7.292 16.089 C 7.408 16.089 7.501 16.052 7.576 15.981 C 7.649 15.91 7.686 15.818 7.686 15.705 L 7.686 13.413 L 10.046 13.413 C 10.161 13.413 10.254 13.375 10.328 13.305 C 10.403 13.234 10.439 13.142 10.439 13.029 Z M 17.517 13.794 C 17.517 13.372 17.365 13.011 17.058 12.713 C 16.75 12.414 16.379 12.266 15.945 12.266 C 15.511 12.266 15.14 12.414 14.832 12.713 C 14.525 13.011 14.373 13.372 14.373 13.794 C 14.373 14.217 14.525 14.577 14.832 14.875 C 15.14 15.174 15.511 15.323 15.945 15.323 C 16.379 15.323 16.75 15.174 17.058 14.875 C 17.365 14.577 17.517 14.217 17.517 13.794 Z M 20.664 10.735 C 20.664 10.312 20.51 9.952 20.203 9.654 C 19.896 9.356 19.525 9.205 19.091 9.205 C 18.656 9.205 18.286 9.356 17.979 9.654 C 17.672 9.952 17.517 10.312 17.517 10.735 C 17.517 11.158 17.672 11.518 17.979 11.817 C 18.286 12.115 18.656 12.266 19.091 12.266 C 19.525 12.266 19.896 12.115 20.203 11.817 C 20.51 11.518 20.664 11.158 20.664 10.735 Z M 23.81 12.266 C 23.81 13.953 23.195 15.396 21.967 16.591 C 20.738 17.784 19.254 18.382 17.517 18.382 C 15.945 18.382 14.561 17.873 13.364 16.854 L 10.661 16.854 C 9.463 17.873 8.08 18.382 6.507 18.382 C 4.77 18.382 3.287 17.784 2.057 16.591 C 0.828 15.396 0.214 13.953 0.214 12.266 C 0.214 10.575 0.828 9.134 2.057 7.94 C 3.287 6.744 4.77 6.147 6.507 6.147 L 17.517 6.147 C 19.254 6.147 20.738 6.744 21.967 7.94 C 23.195 9.134 23.81 10.575 23.81 12.266 Z"/>
+          </svg>
+          Flash
+        </a>
+          <a class="sidebar-link html" href="#">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M 10.439 13.029 L 10.439 11.501 C 10.439 11.388 10.403 11.297 10.328 11.226 C 10.254 11.154 10.161 11.117 10.046 11.117 L 7.686 11.117 L 7.686 8.823 C 7.686 8.712 7.649 8.62 7.576 8.549 C 7.501 8.477 7.408 8.441 7.292 8.441 L 5.719 8.441 C 5.605 8.441 5.51 8.477 5.437 8.549 C 5.364 8.62 5.326 8.712 5.326 8.823 L 5.326 11.117 L 2.968 11.117 C 2.852 11.117 2.759 11.154 2.684 11.226 C 2.611 11.297 2.574 11.388 2.574 11.501 L 2.574 13.029 C 2.574 13.142 2.611 13.234 2.684 13.305 C 2.759 13.375 2.852 13.413 2.968 13.413 L 5.326 13.413 L 5.326 15.705 C 5.326 15.818 5.364 15.91 5.437 15.981 C 5.51 16.052 5.605 16.089 5.719 16.089 L 7.292 16.089 C 7.408 16.089 7.501 16.052 7.576 15.981 C 7.649 15.91 7.686 15.818 7.686 15.705 L 7.686 13.413 L 10.046 13.413 C 10.161 13.413 10.254 13.375 10.328 13.305 C 10.403 13.234 10.439 13.142 10.439 13.029 Z M 17.517 13.794 C 17.517 13.372 17.365 13.011 17.058 12.713 C 16.75 12.414 16.379 12.266 15.945 12.266 C 15.511 12.266 15.14 12.414 14.832 12.713 C 14.525 13.011 14.373 13.372 14.373 13.794 C 14.373 14.217 14.525 14.577 14.832 14.875 C 15.14 15.174 15.511 15.323 15.945 15.323 C 16.379 15.323 16.75 15.174 17.058 14.875 C 17.365 14.577 17.517 14.217 17.517 13.794 Z M 20.664 10.735 C 20.664 10.312 20.51 9.952 20.203 9.654 C 19.896 9.356 19.525 9.205 19.091 9.205 C 18.656 9.205 18.286 9.356 17.979 9.654 C 17.672 9.952 17.517 10.312 17.517 10.735 C 17.517 11.158 17.672 11.518 17.979 11.817 C 18.286 12.115 18.656 12.266 19.091 12.266 C 19.525 12.266 19.896 12.115 20.203 11.817 C 20.51 11.518 20.664 11.158 20.664 10.735 Z M 23.81 12.266 C 23.81 13.953 23.195 15.396 21.967 16.591 C 20.738 17.784 19.254 18.382 17.517 18.382 C 15.945 18.382 14.561 17.873 13.364 16.854 L 10.661 16.854 C 9.463 17.873 8.08 18.382 6.507 18.382 C 4.77 18.382 3.287 17.784 2.057 16.591 C 0.828 15.396 0.214 13.953 0.214 12.266 C 0.214 10.575 0.828 9.134 2.057 7.94 C 3.287 6.744 4.77 6.147 6.507 6.147 L 17.517 6.147 C 19.254 6.147 20.738 6.744 21.967 7.94 C 23.195 9.134 23.81 10.575 23.81 12.266 Z"/>
+          </svg>
+          HTML
+        </a>
+        <a class="sidebar-link nes" href="#">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M 10.439 13.029 L 10.439 11.501 C 10.439 11.388 10.403 11.297 10.328 11.226 C 10.254 11.154 10.161 11.117 10.046 11.117 L 7.686 11.117 L 7.686 8.823 C 7.686 8.712 7.649 8.62 7.576 8.549 C 7.501 8.477 7.408 8.441 7.292 8.441 L 5.719 8.441 C 5.605 8.441 5.51 8.477 5.437 8.549 C 5.364 8.62 5.326 8.712 5.326 8.823 L 5.326 11.117 L 2.968 11.117 C 2.852 11.117 2.759 11.154 2.684 11.226 C 2.611 11.297 2.574 11.388 2.574 11.501 L 2.574 13.029 C 2.574 13.142 2.611 13.234 2.684 13.305 C 2.759 13.375 2.852 13.413 2.968 13.413 L 5.326 13.413 L 5.326 15.705 C 5.326 15.818 5.364 15.91 5.437 15.981 C 5.51 16.052 5.605 16.089 5.719 16.089 L 7.292 16.089 C 7.408 16.089 7.501 16.052 7.576 15.981 C 7.649 15.91 7.686 15.818 7.686 15.705 L 7.686 13.413 L 10.046 13.413 C 10.161 13.413 10.254 13.375 10.328 13.305 C 10.403 13.234 10.439 13.142 10.439 13.029 Z M 17.517 13.794 C 17.517 13.372 17.365 13.011 17.058 12.713 C 16.75 12.414 16.379 12.266 15.945 12.266 C 15.511 12.266 15.14 12.414 14.832 12.713 C 14.525 13.011 14.373 13.372 14.373 13.794 C 14.373 14.217 14.525 14.577 14.832 14.875 C 15.14 15.174 15.511 15.323 15.945 15.323 C 16.379 15.323 16.75 15.174 17.058 14.875 C 17.365 14.577 17.517 14.217 17.517 13.794 Z M 20.664 10.735 C 20.664 10.312 20.51 9.952 20.203 9.654 C 19.896 9.356 19.525 9.205 19.091 9.205 C 18.656 9.205 18.286 9.356 17.979 9.654 C 17.672 9.952 17.517 10.312 17.517 10.735 C 17.517 11.158 17.672 11.518 17.979 11.817 C 18.286 12.115 18.656 12.266 19.091 12.266 C 19.525 12.266 19.896 12.115 20.203 11.817 C 20.51 11.518 20.664 11.158 20.664 10.735 Z M 23.81 12.266 C 23.81 13.953 23.195 15.396 21.967 16.591 C 20.738 17.784 19.254 18.382 17.517 18.382 C 15.945 18.382 14.561 17.873 13.364 16.854 L 10.661 16.854 C 9.463 17.873 8.08 18.382 6.507 18.382 C 4.77 18.382 3.287 17.784 2.057 16.591 C 0.828 15.396 0.214 13.953 0.214 12.266 C 0.214 10.575 0.828 9.134 2.057 7.94 C 3.287 6.744 4.77 6.147 6.507 6.147 L 17.517 6.147 C 19.254 6.147 20.738 6.744 21.967 7.94 C 23.195 9.134 23.81 10.575 23.81 12.266 Z"/>
+          </svg>
+          NES
+        </a>
+        <a class="sidebar-link snes" href="#">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M 10.439 13.029 L 10.439 11.501 C 10.439 11.388 10.403 11.297 10.328 11.226 C 10.254 11.154 10.161 11.117 10.046 11.117 L 7.686 11.117 L 7.686 8.823 C 7.686 8.712 7.649 8.62 7.576 8.549 C 7.501 8.477 7.408 8.441 7.292 8.441 L 5.719 8.441 C 5.605 8.441 5.51 8.477 5.437 8.549 C 5.364 8.62 5.326 8.712 5.326 8.823 L 5.326 11.117 L 2.968 11.117 C 2.852 11.117 2.759 11.154 2.684 11.226 C 2.611 11.297 2.574 11.388 2.574 11.501 L 2.574 13.029 C 2.574 13.142 2.611 13.234 2.684 13.305 C 2.759 13.375 2.852 13.413 2.968 13.413 L 5.326 13.413 L 5.326 15.705 C 5.326 15.818 5.364 15.91 5.437 15.981 C 5.51 16.052 5.605 16.089 5.719 16.089 L 7.292 16.089 C 7.408 16.089 7.501 16.052 7.576 15.981 C 7.649 15.91 7.686 15.818 7.686 15.705 L 7.686 13.413 L 10.046 13.413 C 10.161 13.413 10.254 13.375 10.328 13.305 C 10.403 13.234 10.439 13.142 10.439 13.029 Z M 17.517 13.794 C 17.517 13.372 17.365 13.011 17.058 12.713 C 16.75 12.414 16.379 12.266 15.945 12.266 C 15.511 12.266 15.14 12.414 14.832 12.713 C 14.525 13.011 14.373 13.372 14.373 13.794 C 14.373 14.217 14.525 14.577 14.832 14.875 C 15.14 15.174 15.511 15.323 15.945 15.323 C 16.379 15.323 16.75 15.174 17.058 14.875 C 17.365 14.577 17.517 14.217 17.517 13.794 Z M 20.664 10.735 C 20.664 10.312 20.51 9.952 20.203 9.654 C 19.896 9.356 19.525 9.205 19.091 9.205 C 18.656 9.205 18.286 9.356 17.979 9.654 C 17.672 9.952 17.517 10.312 17.517 10.735 C 17.517 11.158 17.672 11.518 17.979 11.817 C 18.286 12.115 18.656 12.266 19.091 12.266 C 19.525 12.266 19.896 12.115 20.203 11.817 C 20.51 11.518 20.664 11.158 20.664 10.735 Z M 23.81 12.266 C 23.81 13.953 23.195 15.396 21.967 16.591 C 20.738 17.784 19.254 18.382 17.517 18.382 C 15.945 18.382 14.561 17.873 13.364 16.854 L 10.661 16.854 C 9.463 17.873 8.08 18.382 6.507 18.382 C 4.77 18.382 3.287 17.784 2.057 16.591 C 0.828 15.396 0.214 13.953 0.214 12.266 C 0.214 10.575 0.828 9.134 2.057 7.94 C 3.287 6.744 4.77 6.147 6.507 6.147 L 17.517 6.147 C 19.254 6.147 20.738 6.744 21.967 7.94 C 23.195 9.134 23.81 10.575 23.81 12.266 Z"/>
+          </svg>
+          SNES
+        </a>
+        <a class="sidebar-link n64" href="#">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M 10.439 13.029 L 10.439 11.501 C 10.439 11.388 10.403 11.297 10.328 11.226 C 10.254 11.154 10.161 11.117 10.046 11.117 L 7.686 11.117 L 7.686 8.823 C 7.686 8.712 7.649 8.62 7.576 8.549 C 7.501 8.477 7.408 8.441 7.292 8.441 L 5.719 8.441 C 5.605 8.441 5.51 8.477 5.437 8.549 C 5.364 8.62 5.326 8.712 5.326 8.823 L 5.326 11.117 L 2.968 11.117 C 2.852 11.117 2.759 11.154 2.684 11.226 C 2.611 11.297 2.574 11.388 2.574 11.501 L 2.574 13.029 C 2.574 13.142 2.611 13.234 2.684 13.305 C 2.759 13.375 2.852 13.413 2.968 13.413 L 5.326 13.413 L 5.326 15.705 C 5.326 15.818 5.364 15.91 5.437 15.981 C 5.51 16.052 5.605 16.089 5.719 16.089 L 7.292 16.089 C 7.408 16.089 7.501 16.052 7.576 15.981 C 7.649 15.91 7.686 15.818 7.686 15.705 L 7.686 13.413 L 10.046 13.413 C 10.161 13.413 10.254 13.375 10.328 13.305 C 10.403 13.234 10.439 13.142 10.439 13.029 Z M 17.517 13.794 C 17.517 13.372 17.365 13.011 17.058 12.713 C 16.75 12.414 16.379 12.266 15.945 12.266 C 15.511 12.266 15.14 12.414 14.832 12.713 C 14.525 13.011 14.373 13.372 14.373 13.794 C 14.373 14.217 14.525 14.577 14.832 14.875 C 15.14 15.174 15.511 15.323 15.945 15.323 C 16.379 15.323 16.75 15.174 17.058 14.875 C 17.365 14.577 17.517 14.217 17.517 13.794 Z M 20.664 10.735 C 20.664 10.312 20.51 9.952 20.203 9.654 C 19.896 9.356 19.525 9.205 19.091 9.205 C 18.656 9.205 18.286 9.356 17.979 9.654 C 17.672 9.952 17.517 10.312 17.517 10.735 C 17.517 11.158 17.672 11.518 17.979 11.817 C 18.286 12.115 18.656 12.266 19.091 12.266 C 19.525 12.266 19.896 12.115 20.203 11.817 C 20.51 11.518 20.664 11.158 20.664 10.735 Z M 23.81 12.266 C 23.81 13.953 23.195 15.396 21.967 16.591 C 20.738 17.784 19.254 18.382 17.517 18.382 C 15.945 18.382 14.561 17.873 13.364 16.854 L 10.661 16.854 C 9.463 17.873 8.08 18.382 6.507 18.382 C 4.77 18.382 3.287 17.784 2.057 16.591 C 0.828 15.396 0.214 13.953 0.214 12.266 C 0.214 10.575 0.828 9.134 2.057 7.94 C 3.287 6.744 4.77 6.147 6.507 6.147 L 17.517 6.147 C 19.254 6.147 20.738 6.744 21.967 7.94 C 23.195 9.134 23.81 10.575 23.81 12.266 Z"/>
+          </svg>
+          N64
+        </a>
+        <a class="sidebar-link genesis" href="#">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M 10.439 13.029 L 10.439 11.501 C 10.439 11.388 10.403 11.297 10.328 11.226 C 10.254 11.154 10.161 11.117 10.046 11.117 L 7.686 11.117 L 7.686 8.823 C 7.686 8.712 7.649 8.62 7.576 8.549 C 7.501 8.477 7.408 8.441 7.292 8.441 L 5.719 8.441 C 5.605 8.441 5.51 8.477 5.437 8.549 C 5.364 8.62 5.326 8.712 5.326 8.823 L 5.326 11.117 L 2.968 11.117 C 2.852 11.117 2.759 11.154 2.684 11.226 C 2.611 11.297 2.574 11.388 2.574 11.501 L 2.574 13.029 C 2.574 13.142 2.611 13.234 2.684 13.305 C 2.759 13.375 2.852 13.413 2.968 13.413 L 5.326 13.413 L 5.326 15.705 C 5.326 15.818 5.364 15.91 5.437 15.981 C 5.51 16.052 5.605 16.089 5.719 16.089 L 7.292 16.089 C 7.408 16.089 7.501 16.052 7.576 15.981 C 7.649 15.91 7.686 15.818 7.686 15.705 L 7.686 13.413 L 10.046 13.413 C 10.161 13.413 10.254 13.375 10.328 13.305 C 10.403 13.234 10.439 13.142 10.439 13.029 Z M 17.517 13.794 C 17.517 13.372 17.365 13.011 17.058 12.713 C 16.75 12.414 16.379 12.266 15.945 12.266 C 15.511 12.266 15.14 12.414 14.832 12.713 C 14.525 13.011 14.373 13.372 14.373 13.794 C 14.373 14.217 14.525 14.577 14.832 14.875 C 15.14 15.174 15.511 15.323 15.945 15.323 C 16.379 15.323 16.75 15.174 17.058 14.875 C 17.365 14.577 17.517 14.217 17.517 13.794 Z M 20.664 10.735 C 20.664 10.312 20.51 9.952 20.203 9.654 C 19.896 9.356 19.525 9.205 19.091 9.205 C 18.656 9.205 18.286 9.356 17.979 9.654 C 17.672 9.952 17.517 10.312 17.517 10.735 C 17.517 11.158 17.672 11.518 17.979 11.817 C 18.286 12.115 18.656 12.266 19.091 12.266 C 19.525 12.266 19.896 12.115 20.203 11.817 C 20.51 11.518 20.664 11.158 20.664 10.735 Z M 23.81 12.266 C 23.81 13.953 23.195 15.396 21.967 16.591 C 20.738 17.784 19.254 18.382 17.517 18.382 C 15.945 18.382 14.561 17.873 13.364 16.854 L 10.661 16.854 C 9.463 17.873 8.08 18.382 6.507 18.382 C 4.77 18.382 3.287 17.784 2.057 16.591 C 0.828 15.396 0.214 13.953 0.214 12.266 C 0.214 10.575 0.828 9.134 2.057 7.94 C 3.287 6.744 4.77 6.147 6.507 6.147 L 17.517 6.147 C 19.254 6.147 20.738 6.744 21.967 7.94 C 23.195 9.134 23.81 10.575 23.81 12.266 Z"/>
+          </svg>
+          Genesis
+        </a>
+        <a class="sidebar-link gameboy" href="#">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M 10.439 13.029 L 10.439 11.501 C 10.439 11.388 10.403 11.297 10.328 11.226 C 10.254 11.154 10.161 11.117 10.046 11.117 L 7.686 11.117 L 7.686 8.823 C 7.686 8.712 7.649 8.62 7.576 8.549 C 7.501 8.477 7.408 8.441 7.292 8.441 L 5.719 8.441 C 5.605 8.441 5.51 8.477 5.437 8.549 C 5.364 8.62 5.326 8.712 5.326 8.823 L 5.326 11.117 L 2.968 11.117 C 2.852 11.117 2.759 11.154 2.684 11.226 C 2.611 11.297 2.574 11.388 2.574 11.501 L 2.574 13.029 C 2.574 13.142 2.611 13.234 2.684 13.305 C 2.759 13.375 2.852 13.413 2.968 13.413 L 5.326 13.413 L 5.326 15.705 C 5.326 15.818 5.364 15.91 5.437 15.981 C 5.51 16.052 5.605 16.089 5.719 16.089 L 7.292 16.089 C 7.408 16.089 7.501 16.052 7.576 15.981 C 7.649 15.91 7.686 15.818 7.686 15.705 L 7.686 13.413 L 10.046 13.413 C 10.161 13.413 10.254 13.375 10.328 13.305 C 10.403 13.234 10.439 13.142 10.439 13.029 Z M 17.517 13.794 C 17.517 13.372 17.365 13.011 17.058 12.713 C 16.75 12.414 16.379 12.266 15.945 12.266 C 15.511 12.266 15.14 12.414 14.832 12.713 C 14.525 13.011 14.373 13.372 14.373 13.794 C 14.373 14.217 14.525 14.577 14.832 14.875 C 15.14 15.174 15.511 15.323 15.945 15.323 C 16.379 15.323 16.75 15.174 17.058 14.875 C 17.365 14.577 17.517 14.217 17.517 13.794 Z M 20.664 10.735 C 20.664 10.312 20.51 9.952 20.203 9.654 C 19.896 9.356 19.525 9.205 19.091 9.205 C 18.656 9.205 18.286 9.356 17.979 9.654 C 17.672 9.952 17.517 10.312 17.517 10.735 C 17.517 11.158 17.672 11.518 17.979 11.817 C 18.286 12.115 18.656 12.266 19.091 12.266 C 19.525 12.266 19.896 12.115 20.203 11.817 C 20.51 11.518 20.664 11.158 20.664 10.735 Z M 23.81 12.266 C 23.81 13.953 23.195 15.396 21.967 16.591 C 20.738 17.784 19.254 18.382 17.517 18.382 C 15.945 18.382 14.561 17.873 13.364 16.854 L 10.661 16.854 C 9.463 17.873 8.08 18.382 6.507 18.382 C 4.77 18.382 3.287 17.784 2.057 16.591 C 0.828 15.396 0.214 13.953 0.214 12.266 C 0.214 10.575 0.828 9.134 2.057 7.94 C 3.287 6.744 4.77 6.147 6.507 6.147 L 17.517 6.147 C 19.254 6.147 20.738 6.744 21.967 7.94 C 23.195 9.134 23.81 10.575 23.81 12.266 Z"/>
+          </svg>
+          Gameboy
+        </a>
+        <a class="sidebar-link scratch" href="#">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M 10.439 13.029 L 10.439 11.501 C 10.439 11.388 10.403 11.297 10.328 11.226 C 10.254 11.154 10.161 11.117 10.046 11.117 L 7.686 11.117 L 7.686 8.823 C 7.686 8.712 7.649 8.62 7.576 8.549 C 7.501 8.477 7.408 8.441 7.292 8.441 L 5.719 8.441 C 5.605 8.441 5.51 8.477 5.437 8.549 C 5.364 8.62 5.326 8.712 5.326 8.823 L 5.326 11.117 L 2.968 11.117 C 2.852 11.117 2.759 11.154 2.684 11.226 C 2.611 11.297 2.574 11.388 2.574 11.501 L 2.574 13.029 C 2.574 13.142 2.611 13.234 2.684 13.305 C 2.759 13.375 2.852 13.413 2.968 13.413 L 5.326 13.413 L 5.326 15.705 C 5.326 15.818 5.364 15.91 5.437 15.981 C 5.51 16.052 5.605 16.089 5.719 16.089 L 7.292 16.089 C 7.408 16.089 7.501 16.052 7.576 15.981 C 7.649 15.91 7.686 15.818 7.686 15.705 L 7.686 13.413 L 10.046 13.413 C 10.161 13.413 10.254 13.375 10.328 13.305 C 10.403 13.234 10.439 13.142 10.439 13.029 Z M 17.517 13.794 C 17.517 13.372 17.365 13.011 17.058 12.713 C 16.75 12.414 16.379 12.266 15.945 12.266 C 15.511 12.266 15.14 12.414 14.832 12.713 C 14.525 13.011 14.373 13.372 14.373 13.794 C 14.373 14.217 14.525 14.577 14.832 14.875 C 15.14 15.174 15.511 15.323 15.945 15.323 C 16.379 15.323 16.75 15.174 17.058 14.875 C 17.365 14.577 17.517 14.217 17.517 13.794 Z M 20.664 10.735 C 20.664 10.312 20.51 9.952 20.203 9.654 C 19.896 9.356 19.525 9.205 19.091 9.205 C 18.656 9.205 18.286 9.356 17.979 9.654 C 17.672 9.952 17.517 10.312 17.517 10.735 C 17.517 11.158 17.672 11.518 17.979 11.817 C 18.286 12.115 18.656 12.266 19.091 12.266 C 19.525 12.266 19.896 12.115 20.203 11.817 C 20.51 11.518 20.664 11.158 20.664 10.735 Z M 23.81 12.266 C 23.81 13.953 23.195 15.396 21.967 16.591 C 20.738 17.784 19.254 18.382 17.517 18.382 C 15.945 18.382 14.561 17.873 13.364 16.854 L 10.661 16.854 C 9.463 17.873 8.08 18.382 6.507 18.382 C 4.77 18.382 3.287 17.784 2.057 16.591 C 0.828 15.396 0.214 13.953 0.214 12.266 C 0.214 10.575 0.828 9.134 2.057 7.94 C 3.287 6.744 4.77 6.147 6.507 6.147 L 17.517 6.147 C 19.254 6.147 20.738 6.744 21.967 7.94 C 23.195 9.134 23.81 10.575 23.81 12.266 Z"/>
+          </svg>
+          Scratch
+        </a>
+      </div>
+      </div>
+      <br><a onclick='$(".page").hide(); $(".save-page").show();' href="#">HOW TO SAVE!!!</a><br>
+      <a onclick='$(".page").hide(); $(".controls-page").show();' href="#">Controls</a><br>
+      <a onclick='$(".page").hide(); $(".suggest-page").show();' href="#">Suggest Games</a>
+      <p>Project Platinum Was Made By Zachary For Apollo <3</p>
+      <p>Be nice to your teachers and pay attention, please.</p>
+    </div>
+    <div class="wrapper">
+      <div class="header">
+        <!-- search bar
+      <div class="search-bar">
+        <input type="text" placeholder="Search">
+      </div>
+      -->
+      </div>
+      <div class="main-container">
+        <!-- Game Page -->
+        <div class="page game-page">
+        </div>
+
+        <!-- Save Page -->
+        <div class="page save-page">
+          <h1 class="main-header">How To Save</h1>
+          <p>Flash games handle their own save files, but Emulated games are a bit trickier to save, follow the tutorial below.</p>
+          <!--<video id="my_video_1" class="video-js vjs-default-skin anim" width="640px" height="267px" controls preload="none" poster='https://images.unsplash.com/photo-1476801071117-fbc157ae3f01?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDh8fHxlbnwwfHx8&w=1000&q=80' data-setup='{ "aspectRatio":"940:620", "playbackRates": [1, 1.5, 2] }'>
+            <source src="https://player.vimeo.com/external/390402719.sd.mp4?s=20cfdb066c4253047562b65bd4e411b86a004bc5&profile_id=139&oauth2_token_id=57447761" type='video/mp4' />
+          </video>
+          -->
+          <h2>Text Directions</h2>
+          <p>Emulated game saves are handled by what's called save states. A save state is an exact copy of what you're doing in that moment, so it's like you never even closed the game. To save your save state, click the save icon in your game like below.</p>
+          <img src="https://github.com/TeamNitrous/projectplatinum/blob/main/assets/misc/savestatesave.png?raw=true" alt="saving save state">
+          <p>This will download a file called "(code name of game).state" KEEP THIS FILE as this is your save. The next time you want to load your save, just click the load save button.</p>
+          <img src="https://github.com/TeamNitrous/projectplatinum/blob/main/assets/misc/savestateload.png?raw=true" alt="loading save state">
+          <p>Then simply select the image downloaded previously, and you're right back where you left off!</p>
+        </div>
+
+        <!-- Suggestion Page -->
+        <div class="page suggest-page">
+          <h1 class="main-header">Suggestions/Reports</h1>
+          <p>Have a problem? Want to request a game? Use the google form below then look for your suggestion below once I get to it.</p>
+          <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfJTRPkIxbOodyPd4tAs6q5S0ODF7T0imRiO2K2FcjYH7jfOQ/viewform?embedded=true" width="100%" height="600px" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+          <ul>
+            <li>"add basketball legends" : Working on that one</li>
+            <li>"The Right Mix and Pool" : added "The Right Mix" and Working on that second one</li>
+            <li>"bring that fat ass over here" : no</li>
+            <li>"Add FNAF" : added an alternative, it's in the scratch games area, hope you'll like it</li>
+            <li>"aint no way you made this zach." : Too bad, i did</li>
+            <li>"you're stinky ands shoudl the duck game saga if you can" : Added Duck Life 1, the other games sadly are too new to be emulated</li>
+            <li>"It don't save progress in Pokemon (blue version specifically)" : oh you poor soul, i made saving directions more visible in this version im very sorry</li>
+            <li>"some of the games dont work is there a way to fix it " : not specific enough broski</li>
+            <li>"If you are able to, can you add Zombotron, Armor Mayhem, and Echoes Operation Stranglehold" : you were so polite and i honestly found and tested all these games and they're all too new to be emulated, sorry</li>
+            <li>"RUBBLE TROUBLE PLEASE I'LL DO ANYTHING, thank you" : "love the enthusiasm however the developers have DRM which means I can't put it on the site"</li>
+            <li>"Gacha club ;P" : gacha club's swf is locked and either way its way too large to reasonably host, sorry</li>
+            <li>"I suggest BTD5 Flash and Duck Life 1-4. Maybe run 1-3" : btd5 is too new to be emulated, i did add duck life 1, and run 1 is unbearable and the rest are too new</li>
+            <li>"ZACHARY, CAN YOU ADD FNAF!?" : added an alternative, it's in the scratch games area, hope you like it</li>
+            <li>"please add COD :>" : haha, ha, ha... very funny</li>
+            <li>"can you plzz add krunker io i will pay you thx you" : as much as I love money, it's a private server game and the school's security is really tight on those, sorry (but i am looking into it)</li>
+          </ul>
+        </div>
+
+        <!-- Controls Page -->
+        <div class="page controls-page">
+          <h1 class="main-header">Controls</h1>
+          <p>Flash games have no universal control scheme, just depends on the game, Emulated games however are a bit trickier. To access the controls page, click the controller icon in the game.</p>
+          <img src="https://github.com/TeamNitrous/projectplatinum/blob/main/assets/misc/controlsbutton.png?raw=true" alt="controller button">
+          <p>This will bring up a menu, that looks like this:</p>
+          <img src="https://github.com/TeamNitrous/projectplatinum/blob/main/assets/misc/controlspage.png?raw=true" alt="controls menu">
+          <p>This menu may look daunting at first, but take a damn chill pill and read it. On the far left in gray, you have the game's controls. On the left white box, you have controller inputs, this would be if you plugged in an Xbox or PS4 controller. On the right white box, you have the keyboard's inputs. To change controls, just click the set button on the right, then press the cooresponding key you want to map.</p><br>
+          <p>OR, deal with it, arrow keys are directions, z/x/a/s usually do things. Then on N64 controls are t/f/g/h instead of arrow keys, and w/e/r are used too.</p>
+          <br>
+          <br>
+        </div>
+
+        <!-- Home Page -->
+        <div class="page home-page">
+          <div class="main-header anim" style="--delay: 0s">Discover</div>
+          <p>Notice! If games are still running after you close them out, click the home button and it will stop.</p>
+          
+          <!-- Big Ads -->
+          <div class="main-blogs">
+            <a href="#" class="main-blog anim home1" style="--delay: .1s">
+              <div class="main-blog__title">Papa's Pizzeria</div>
+            </a>
+            <a href="#" class="main-blog anim home2" style="--delay: .2s">
+              <div class="main-blog__title">Mario Kart 64</div>
+            </a>
+          </div>
+          <div class="small-header anim" style="--delay: .3s">Zach's Pick</div>
+
+          <!-- Games -->
+          <!--not made by hector-->
+          <div class="videos">
+            <!--Papa's Pizzeria-->
+            <a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/swfemu.zombienw.com\/?swf=https:\/\/swf.zombienw.com\/Papas%20Pizzeria.swf\" frameborder=\"0\"><\/iframe>")' class="video anim" style="--delay: .4s">
+              <div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/papaspizzeria.jpg?raw=true');"></div>
+              <div class="video-name">Papa's Pizzeria</div>
+              <div class="video-view">Flash</div>
+            </a>
+            <!--Super Mario Bros 3-->
+            <a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"nes\";EJS_gameName = \"supermariobros3\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/complete-american-nintendo-entertainment-system-rom-set/Complete%20American%20Nintendo%20Entertainment%20System%20ROM%20set.zip/Officially%20licensed%20games%2FSuper%20Mario%20Bros.%203%20%28USA%29.nes\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/nes/mario3.jpg?raw=true');"></div><div class="video-name">Super Mario Bros 3</div><div class="video-view">NES</div></a>
+            <!--Bloons TD 2-->
+            <a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/swfemu.zombienw.com\/?swf=https:\/\/swf.zombienw.com\/Bloons TD 2.swf\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/bloonstd2.jpg?raw=true');"></div><div class="video-name">Bloons TD 2</div><div class="video-view">Flash</div></a>
+            <!--Geometry Dash-->
+            <a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/turbowarp.org\/105500895\/embed\" frameborder=\"0\" allowfullscreen></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/scratch/geometrydash.png?raw=true');"></div><div class="video-name">Geometry Dash</div><div class="video-view">Scratch</div></a>
+            <!--Mario Kart 64-->
+            <a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"n64\";EJS_gameName = \"mariokart64\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/Nintendo64V2RomCollectionByGhostware/Mario%20Kart%2064%20%28USA%29.zip/Mario%20Kart%2064%20%28USA%29.n64\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/n64/mariokart64.jpg?raw=true');"></div><div class="video-name">Mario Kart 64</div><div class="video-view">N64</div></a>
+            <!--Tetris-->
+            <a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"gb\";EJS_gameName = \"tetris\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/GameboyClassicRomCollectionByGhostware/Tetris%20%28World%29%20%28Rev%20A%29.zip/Tetris%20%28World%29%20%28Rev%20A%29.gb\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/gb/tetris.jpg?raw=true');"></div><div class="video-name">Tetris</div><div class="video-view">Gameboy</div></a>
+            <!--Mario Party 2-->
+            <a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"n64\";EJS_gameName = \"marioparty2\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/Nintendo64V2RomCollectionByGhostware/Mario%20Party%202%20%28USA%29.zip/Mario%20Party%202%20%28USA%29.n64\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/n64/marioparty2.jpg?raw=true');"></div><div class="video-name">Mario Party 2</div><div class="video-view">N64</div></a>
+            <!--Yoshi's Island-->
+            <a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"snes\";EJS_gameName = \"yoshisisland\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/SuperNintendoUSACollectionByGhostware/Super%20Mario%20World%202%20-%20Yoshi%27s%20Island%20%28USA%29%20%28Rev%201%29.zip/Super%20Mario%20World%202%20-%20Yoshi%27s%20Island%20%28USA%29%20%28Rev%201%29.sfc\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/snes/yoshisisland.jpg?raw=true');"></div><div class="video-name">Yoshi's Island</div><div class="video-view">SNES</div></a>
+
+          </div>
+        </div>
+
+        <!-- Flash Page -->
+        <div class="page flash-page">
+          <div class="main-header anim" style="--delay: 0s">Flash Games</div>
+          
+          <!-- Big Ads -->
+          <div class="main-blogs">
+            <a href="#" class="main-blog anim flash1" style="--delay: .1s">
+              <div class="main-blog__title">Bloons TD 2</div>
+            </a>
+            <a href="#" class="main-blog anim flash2" style="--delay: .2s">
+              <div class="main-blog__title">Papa's Pizzeria</div>
+            </a>
+          </div>
+          <div class="small-header anim" style="--delay: .3s">Games</div>
+
+          <!-- Games -->
+          <div class="videos">
+            <!-- DO NOT REMOVE BELOW COMENT, THAT IS WHERE THE COMPILER INJECTS THE TITLES -->
+            <!--Flash Games From Compiler-->
+<!--Bloons TD 2-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/swfemu.zombienw.com\/?swf=https:\/\/swf.zombienw.com\/Bloons TD 2.swf\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/bloonstd2.jpg?raw=true');"></div><div class="video-name">Bloons TD 2</div><div class="video-view">Flash</div></a>
+<!--Papa's Pizzeria-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/swfemu.zombienw.com\/?swf=https:\/\/swf.zombienw.com\/Papas Pizzeria.swf\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/papaspizzeria.jpg?raw=true');"></div><div class="video-name">Papa's Pizzeria</div><div class="video-view">Flash</div></a>
+<!--1 on 1 Soccer-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/swfemu.zombienw.com\/?swf=https:\/\/swf.zombienw.com\/1on1Soccer.swf\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/1on1soccer.png?raw=true');"></div><div class="video-name">1 on 1 Soccer</div><div class="video-view">Flash</div></a>
+<!--Bloxorz-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/swfemu.zombienw.com\/?swf=https:\/\/swf.zombienw.com\/Bloxorz.swf\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/bloxorz.jpg?raw=true');"></div><div class="video-name">Bloxorz</div><div class="video-view">Flash</div></a>
+<!--Factory Balls-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/swfemu.zombienw.com\/?swf=https:\/\/swf.zombienw.com\/Factory Balls.swf\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/factoryballs.jpg?raw=true');"></div><div class="video-name">Factory Balls</div><div class="video-view">Flash</div></a>
+<!--Fancy Pants-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/swfemu.zombienw.com\/?swf=https:\/\/swf.zombienw.com\/FancyPantsAdventure.swf\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/fancypantsadventure.jpg?raw=true');"></div><div class="video-name">Fancy Pants</div><div class="video-view">Flash</div></a>
+<!--2D Portal-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/swfemu.zombienw.com\/?swf=https:\/\/swf.zombienw.com\/Portal.swf\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/flashportal.jpg?raw=true');"></div><div class="video-name">2D Portal</div><div class="video-view">Flash</div></a>
+<!--Impossible Quiz-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/swfemu.zombienw.com\/?swf=https:\/\/swf.zombienw.com\/The Impossible Quiz.swf\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/impossiblequiz.png?raw=true');"></div><div class="video-name">Impossible Quiz</div><div class="video-view">Flash</div></a>
+<!--Mario Combat-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/swfemu.zombienw.com\/?swf=https:\/\/swf.zombienw.com\/mariocombat.swf\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/mariocombat.jpg?raw=true');"></div><div class="video-name">Mario Combat</div><div class="video-view">Flash</div></a>
+<!--Meat Boy-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/swfemu.zombienw.com\/?swf=https:\/\/swf.zombienw.com\/MeatBoy.swf\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/meatboy.png?raw=true');"></div><div class="video-name">Meat Boy</div><div class="video-view">Flash</div></a>
+<!--Ninja Painter-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/swfemu.zombienw.com\/?swf=https:\/\/swf.zombienw.com\/NinjaPainter.swf\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/ninjapainter.jpg?raw=true');"></div><div class="video-name">Ninja Painter</div><div class="video-view">Flash</div></a>
+<!--Raft Wars-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/swfemu.zombienw.com\/?swf=https:\/\/swf.zombienw.com\/RaftWars.swf\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/raftwars.png?raw=true');"></div><div class="video-name">Raft Wars</div><div class="video-view">Flash</div></a>
+<!--Super Smash Flash-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/swfemu.zombienw.com\/?swf=https:\/\/swf.zombienw.com\/SmashFlash1.swf\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/smashflash1.png?raw=true');"></div><div class="video-name">Super Smash Flash</div><div class="video-view">Flash</div></a>
+<!--Super Mario 63-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/swfemu.zombienw.com\/?swf=https:\/\/swf.zombienw.com\/Super Mario 63.swf\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/supermario63.jpg?raw=true');"></div><div class="video-name">Super Mario 63</div><div class="video-view">Flash</div></a>
+<!--The World's Hardest Game-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/swfemu.zombienw.com\/?swf=https:\/\/swf.zombienw.com\/The Worlds Hardest Game.swf\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/theworldshardestgame.png?raw=true');"></div><div class="video-name">The World's Hardest Game</div><div class="video-view">Flash</div></a>
+<!--Ultimate Sonic-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/swfemu.zombienw.com\/?swf=https:\/\/swf.zombienw.com\/ultimatesonic.swf\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/ultimatesonic.jpg?raw=true');"></div><div class="video-name">Ultimate Sonic</div><div class="video-view">Flash</div></a>
+<!--Duck Life-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/swfemu.zombienw.com\/?swf=https:\/\/swf.zombienw.com\/ducklife.swf\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/ducklife.png?raw=true');"></div><div class="video-name">Duck Life</div><div class="video-view">Flash</div></a>
+<!--The Right Mix-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/swfemu.zombienw.com\/?swf=https:\/\/swf.zombienw.com\/therightmix.swf\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/therightmix.jpg?raw=true');"></div><div class="video-name">The Right Mix</div><div class="video-view">Flash</div></a>
+
+          </div>
+        </div>
+
+        <!-- HTML Page -->
+        <div class="page html-page">
+          <div class="main-header anim" style="--delay: 0s">HTML Games</div>
+          
+          <!-- Big Ads -->
+          <div class="main-blogs">
+            <a href="#" class="main-blog anim html1" style="--delay: .1s">
+              <div class="main-blog__title">Wordle</div>
+            </a>
+            <a href="#" class="main-blog anim html2" style="--delay: .2s">
+              <div class="main-blog__title">Tetris</div>
+            </a>
+          </div>
+          <div class="small-header anim" style="--delay: .3s">Games</div>
+
+          <!-- Games -->
+          <div class="videos">
+            <!-- DO NOT REMOVE BELOW COMENT, THAT IS WHERE THE COMPILER INJECTS THE TITLES -->
+            <!--HTML Games From Compiler-->
+<!--2048-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"width:100%; height:100%;\" src=\"http://swf.zombienw.com/games/2048/index.html\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/swfarchive/blob/main/games/2048/logo.png?raw=true');"></div><div class="video-name">2048</div><div class="video-view">HTML</div></a>
+<!--3D Chess-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"width:100%; height:100%;\" src=\"http://swf.zombienw.com/games/3dchess/index.html\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/swfarchive/blob/main/games/3dchess/logo.jpg?raw=true');"></div><div class="video-name">3D Chess</div><div class="video-view">HTML</div></a>
+<!--Minesweeper-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"width:100%; height:100%;\" src=\"http://swf.zombienw.com/games/minesweeper/index.html\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/swfarchive/blob/main/games/minesweeper/logo.jpg?raw=true');"></div><div class="video-name">Minesweeper</div><div class="video-view">HTML</div></a>
+<!--Tetris-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"width:100%; height:100%;\" src=\"http://swf.zombienw.com/games/tetris/index.html\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/swfarchive/blob/main/games/tetris/logo.png?raw=true');"></div><div class="video-name">Tetris</div><div class="video-view">HTML</div></a>
+<!--Wordle-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"width:100%; height:100%;\" src=\"http://swf.zombienw.com/games/wordle/index.html\" frameborder=\"0\"></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/swfarchive/blob/main/games/wordle/logo.jpg?raw=true');"></div><div class="video-name">Wordle</div><div class="video-view">HTML</div></a>
+
+          </div>
+        </div>
+
+        <!-- NES Page -->
+        <div class="page nes-page">
+          <div class="main-header anim" style="--delay: 0s">NES Games</div>
+          
+          <!-- Big Ads -->
+          <div class="main-blogs">
+            <a href="#" class="main-blog anim nes1" style="--delay: .1s">
+              <div class="main-blog__title">Contra</div>
+            </a>
+            <a href="#" class="main-blog anim nes2" style="--delay: .2s">
+              <div class="main-blog__title">Super Mario Bros 1</div>
+            </a>
+          </div>
+          <div class="small-header anim" style="--delay: .3s">Games</div>
+
+          <!-- Games -->
+          <div class="videos">
+            <!-- DO NOT REMOVE BELOW COMENT, THAT IS WHERE THE COMPILER INJECTS THE TITLES -->
+            <!--NES Games From Compiler-->
+<!--Action 52-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"nes\";EJS_gameName = \"action52\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/complete-american-nintendo-entertainment-system-rom-set/Complete%20American%20Nintendo%20Entertainment%20System%20ROM%20set.zip/Unlicensed%20games%2FUSA%2FAction%2052%20%28USA%29%20%28Unl%29.nes\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/nes/action52.jpg?raw=true');"></div><div class="video-name">Action 52</div><div class="video-view">NES</div></a>
+<!--Contra-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"nes\";EJS_gameName = \"contra\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/complete-american-nintendo-entertainment-system-rom-set/Complete%20American%20Nintendo%20Entertainment%20System%20ROM%20set.zip/Officially%20licensed%20games%2FContra%20%28USA%29.nes\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/nes/contra.jpg?raw=true');"></div><div class="video-name">Contra</div><div class="video-view">NES</div></a>
+<!--Donkey Kong-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"nes\";EJS_gameName = \"donkeykong\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/complete-american-nintendo-entertainment-system-rom-set/Complete%20American%20Nintendo%20Entertainment%20System%20ROM%20set.zip/Officially%20licensed%20games%2FDonkey%20Kong%20%28JU%29.nes\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/nes/donkeykong.jpg?raw=true');"></div><div class="video-name">Donkey Kong</div><div class="video-view">NES</div></a>
+<!--Dr. Mario-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"nes\";EJS_gameName = \"dr.mario\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/NintendoMultiRomCollectionByGhostware/Dr.%20Mario.zip/Dr.%20Mario%20%28JU%29%20%28PRG0%29%20%5B%21%5D.nes\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/nes/drmario.jpg?raw=true');"></div><div class="video-name">Dr. Mario</div><div class="video-view">NES</div></a>
+<!--Excitebike-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"nes\";EJS_gameName = \"excitebike\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/complete-american-nintendo-entertainment-system-rom-set/Complete%20American%20Nintendo%20Entertainment%20System%20ROM%20set.zip/Officially%20licensed%20games%2FExcitebike%20%28Japan%2C%20USA%29.nes\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/nes/excitebike.jpg?raw=true');"></div><div class="video-name">Excitebike</div><div class="video-view">NES</div></a>
+<!--Super Mario Bros 1-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"nes\";EJS_gameName = \"supermariobros1\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/complete-american-nintendo-entertainment-system-rom-set/Complete%20American%20Nintendo%20Entertainment%20System%20ROM%20set.zip/Officially%20licensed%20games%2FSuper%20Mario%20Bros.%20%28World%29.nes\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/nes/mario1.png?raw=true');"></div><div class="video-name">Super Mario Bros 1</div><div class="video-view">NES</div></a>
+<!--Super Mario Bros 2-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"nes\";EJS_gameName = \"supermariobros2\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/complete-american-nintendo-entertainment-system-rom-set/Complete%20American%20Nintendo%20Entertainment%20System%20ROM%20set.zip/Officially%20licensed%20games%2FSuper%20Mario%20Bros.%202%20%28USA%29.nes\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/nes/mario2.jpg?raw=true');"></div><div class="video-name">Super Mario Bros 2</div><div class="video-view">NES</div></a>
+<!--Super Mario Bros 3-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"nes\";EJS_gameName = \"supermariobros3\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/complete-american-nintendo-entertainment-system-rom-set/Complete%20American%20Nintendo%20Entertainment%20System%20ROM%20set.zip/Officially%20licensed%20games%2FSuper%20Mario%20Bros.%203%20%28USA%29.nes\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/nes/mario3.jpg?raw=true');"></div><div class="video-name">Super Mario Bros 3</div><div class="video-view">NES</div></a>
+<!--Megaman-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"nes\";EJS_gameName = \"megaman\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/complete-american-nintendo-entertainment-system-rom-set/Complete%20American%20Nintendo%20Entertainment%20System%20ROM%20set.zip/Officially%20licensed%20games%2FMega%20Man%20%28USA%29.nes\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/nes/megaman.jpg?raw=true');"></div><div class="video-name">Megaman</div><div class="video-view">NES</div></a>
+<!--Metroid-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"nes\";EJS_gameName = \"metroid\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/complete-american-nintendo-entertainment-system-rom-set/Complete%20American%20Nintendo%20Entertainment%20System%20ROM%20set.zip/Officially%20licensed%20games%2FMetroid%20%28USA%29.nes\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/nes/metroid.jpg?raw=true');"></div><div class="video-name">Metroid</div><div class="video-view">NES</div></a>
+<!--Pac-Man-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"nes\";EJS_gameName = \"pac-man\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/complete-american-nintendo-entertainment-system-rom-set/Complete%20American%20Nintendo%20Entertainment%20System%20ROM%20set.zip/Officially%20licensed%20games%2FPac-Man%20%28USA%29%20%28Namco%29.nes\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/nes/pacman.jpg?raw=true');"></div><div class="video-name">Pac-Man</div><div class="video-view">NES</div></a>
+<!--Punch-Out!-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"nes\";EJS_gameName = \"punch-out!\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/complete-american-nintendo-entertainment-system-rom-set/Complete%20American%20Nintendo%20Entertainment%20System%20ROM%20set.zip/Officially%20licensed%20games%2FPunch-Out%21%21%20%28USA%29.nes\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/nes/punchout.png?raw=true');"></div><div class="video-name">Punch-Out!</div><div class="video-view">NES</div></a>
+<!--RC Pro AM-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"nes\";EJS_gameName = \"rcproam\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/complete-american-nintendo-entertainment-system-rom-set/Complete%20American%20Nintendo%20Entertainment%20System%20ROM%20set.zip/Officially%20licensed%20games%2FR.C.%20Pro-Am%20%28USA%29.nes\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/nes/rcproam.jpg?raw=true');"></div><div class="video-name">RC Pro AM</div><div class="video-view">NES</div></a>
+<!--Tetris-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"nes\";EJS_gameName = \"tetris\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/complete-american-nintendo-entertainment-system-rom-set/Complete%20American%20Nintendo%20Entertainment%20System%20ROM%20set.zip/Officially%20licensed%20games%2FTetris%20%28USA%29.nes\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/nes/tetris.jpg?raw=true');"></div><div class="video-name">Tetris</div><div class="video-view">NES</div></a>
+<!--The Legend Of Zelda-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"nes\";EJS_gameName = \"thelegendofzelda\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/complete-american-nintendo-entertainment-system-rom-set/Complete%20American%20Nintendo%20Entertainment%20System%20ROM%20set.zip/Officially%20licensed%20games%2FThe%20Legend%20of%20Zelda%20%28USA%29.nes\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/nes/zelda.png?raw=true');"></div><div class="video-name">The Legend Of Zelda</div><div class="video-view">NES</div></a>
+
+          </div>
+        </div>
+
+        <!-- SNES Page -->
+        <div class="page snes-page">
+          <div class="main-header anim" style="--delay: 0s">SNES Games</div>
+          
+          <!-- Big Ads -->
+          <div class="main-blogs">
+            <a href="#" class="main-blog anim snes1" style="--delay: .1s">
+              <div class="main-blog__title">Super Mario World</div>
+            </a>
+            <a href="#" class="main-blog anim snes2" style="--delay: .2s">
+              <div class="main-blog__title">Super Mario RPG</div>
+            </a>
+          </div>
+          <div class="small-header anim" style="--delay: .3s">Games</div>
+
+          <!-- Games -->
+          <div class="videos">
+            <!-- DO NOT REMOVE BELOW COMENT, THAT IS WHERE THE COMPILER INJECTS THE TITLES -->
+            <!--SNES Games From Compiler-->
+<!--Mario All-Stars-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"snes\";EJS_gameName = \"marioall-stars\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/SuperNintendoUSACollectionByGhostware/Super%20Mario%20All-Stars%20%28USA%29.zip/Super%20Mario%20All-Stars%20%28USA%29.sfc\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/snes/allstars.jpg?raw=true');"></div><div class="video-name">Mario All-Stars</div><div class="video-view">SNES</div></a>
+<!--Donkey Kong Country-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"snes\";EJS_gameName = \"donkeykongcountry\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/SuperNintendoUSACollectionByGhostware/Donkey%20Kong%20Country%20%28USA%29%20%28Rev%202%29.zip/Donkey%20Kong%20Country%20%28USA%29%20%28Rev%202%29.sfc\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/snes/dkcountry.jpg?raw=true');"></div><div class="video-name">Donkey Kong Country</div><div class="video-view">SNES</div></a>
+<!--Doom-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"snes\";EJS_gameName = \"doom\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/SuperNintendoUSACollectionByGhostware/Doom%20%28USA%29.zip/Doom%20%28USA%29.sfc\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/snes/doom.jpg?raw=true');"></div><div class="video-name">Doom</div><div class="video-view">SNES</div></a>
+<!--Earthbound-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"snes\";EJS_gameName = \"earthbound\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/SuperNintendoUSACollectionByGhostware/EarthBound%20%28USA%29.zip/EarthBound%20%28USA%29.sfc\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/snes/earthbound.jpg?raw=true');"></div><div class="video-name">Earthbound</div><div class="video-view">SNES</div></a>
+<!--F-Zero-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"snes\";EJS_gameName = \"f-zero\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/SuperNintendoUSACollectionByGhostware/F-Zero%20%28USA%29.zip/F-Zero%20%28USA%29.sfc\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/snes/fzero.jpg?raw=true');"></div><div class="video-name">F-Zero</div><div class="video-view">SNES</div></a>
+<!--Super Mario Kart-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"snes\";EJS_gameName = \"supermariokart\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/SuperNintendoUSACollectionByGhostware/Super%20Mario%20Kart%20%28USA%29.zip/Super%20Mario%20Kart%20%28USA%29.sfc\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/snes/mariokart.jpg?raw=true');"></div><div class="video-name">Super Mario Kart</div><div class="video-view">SNES</div></a>
+<!--Super Mario World-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"snes\";EJS_gameName = \"supermarioworld\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/SuperNintendoUSACollectionByGhostware/Super%20Mario%20World%20%28USA%29.zip/Super%20Mario%20World%20%28USA%29.sfc\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/snes/marioworld.png?raw=true');"></div><div class="video-name">Super Mario World</div><div class="video-view">SNES</div></a>
+<!--Mortal Kombat-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"snes\";EJS_gameName = \"mortalkombat\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/SuperNintendoUSACollectionByGhostware/Mortal%20Kombat%20%28USA%29.zip/Mortal%20Kombat%20%28USA%29.sfc\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/snes/mortalkombat.jpg?raw=true');"></div><div class="video-name">Mortal Kombat</div><div class="video-view">SNES</div></a>
+<!--Super Mario RPG-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"snes\";EJS_gameName = \"supermariorpg\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/SuperNintendoUSACollectionByGhostware/Super%20Mario%20RPG%20-%20Legend%20of%20the%20Seven%20Stars%20%28USA%29.zip/Super%20Mario%20RPG%20-%20Legend%20of%20the%20Seven%20Stars%20%28USA%29.sfc\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/snes/smrpg.jpg?raw=true');"></div><div class="video-name">Super Mario RPG</div><div class="video-view">SNES</div></a>
+<!--Star Fox-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"snes\";EJS_gameName = \"starfox\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/SuperNintendoUSACollectionByGhostware/Star%20Fox%20%28USA%29%20%28Rev%202%29.zip/Star%20Fox%20%28USA%29%20%28Rev%202%29.sfc\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/snes/starfox.jpg?raw=true');"></div><div class="video-name">Star Fox</div><div class="video-view">SNES</div></a>
+<!--Street Fighter-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"snes\";EJS_gameName = \"streetfighter\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/SuperNintendoUSACollectionByGhostware/Street%20Fighter%20II%20%28USA%29.zip/Street%20Fighter%20II%20%28USA%29.sfc\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/snes/streetfighter.jpg?raw=true');"></div><div class="video-name">Street Fighter</div><div class="video-view">SNES</div></a>
+<!--Yoshi's Island-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"snes\";EJS_gameName = \"yoshisisland\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/SuperNintendoUSACollectionByGhostware/Super%20Mario%20World%202%20-%20Yoshi%27s%20Island%20%28USA%29%20%28Rev%201%29.zip/Super%20Mario%20World%202%20-%20Yoshi%27s%20Island%20%28USA%29%20%28Rev%201%29.sfc\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/snes/yoshisisland.jpg?raw=true');"></div><div class="video-name">Yoshi's Island</div><div class="video-view">SNES</div></a>
+
+          </div>
+        </div>
+
+        <!-- N64 Page -->
+        <div class="page n64-page">
+          <div class="main-header anim" style="--delay: 0s">Nintendo 64 Games</div>
+          
+          <!-- Big Ads -->
+          <div class="main-blogs">
+            <a href="#" class="main-blog anim n641" style="--delay: .1s">
+              <div class="main-blog__title">Mario Kart 64</div>
+            </a>
+            <a href="#" class="main-blog anim n642" style="--delay: .2s">
+              <div class="main-blog__title">Super Smash Bros.</div>
+            </a>
+          </div>
+          <div class="small-header anim" style="--delay: .3s">Games</div>
+
+          <!-- Games -->
+          <div class="videos">
+            <!-- DO NOT REMOVE BELOW COMENT, THAT IS WHERE THE COMPILER INJECTS THE TITLES -->
+            <!--N64 Games From Compiler-->
+<!--The Legend of Zelda: Majora's Mask-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"n64\";EJS_gameName = \"thelegendofzelda:majorasmask\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/Nintendo64V2RomCollectionByGhostware/Legend%20of%20Zelda%2C%20The%20-%20Majora%27s%20Mask%20%28USA%29.zip/Legend%20of%20Zelda%2C%20The%20-%20Majora%27s%20Mask%20%28USA%29.n64\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/n64/majorasmask.jpg?raw=true');"></div><div class="video-name">The Legend of Zelda: Majora's Mask</div><div class="video-view">N64</div></a>
+<!--Super Mario 64-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"n64\";EJS_gameName = \"supermario64\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/Nintendo64V2RomCollectionByGhostware/Super%20Mario%2064%20%28USA%29.zip/Super%20Mario%2064%20%28USA%29.n64\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/n64/mario64.jpg?raw=true');"></div><div class="video-name">Super Mario 64</div><div class="video-view">N64</div></a>
+<!--Mario Kart 64-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"n64\";EJS_gameName = \"mariokart64\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/Nintendo64V2RomCollectionByGhostware/Mario%20Kart%2064%20%28USA%29.zip/Mario%20Kart%2064%20%28USA%29.n64\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/n64/mariokart64.jpg?raw=true');"></div><div class="video-name">Mario Kart 64</div><div class="video-view">N64</div></a>
+<!--Mario Party 2-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"n64\";EJS_gameName = \"marioparty2\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/Nintendo64V2RomCollectionByGhostware/Mario%20Party%202%20%28USA%29.zip/Mario%20Party%202%20%28USA%29.n64\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/n64/marioparty2.jpg?raw=true');"></div><div class="video-name">Mario Party 2</div><div class="video-view">N64</div></a>
+<!--The Legend of Zelda: Ocarina of Time-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"n64\";EJS_gameName = \"thelegendofzelda:ocarinaoftime\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/Nintendo64V2RomCollectionByGhostware/Legend%20of%20Zelda%2C%20The%20-%20Ocarina%20of%20Time%20%28USA%29%20%28Rev%20B%29.zip/Legend%20of%20Zelda%2C%20The%20-%20Ocarina%20of%20Time%20%28USA%29%20%28Rev%20B%29.n64\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/n64/oot.jpg?raw=true');"></div><div class="video-name">The Legend of Zelda: Ocarina of Time</div><div class="video-view">N64</div></a>
+<!--Super Smash Bros.-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"n64\";EJS_gameName = \"supersmashbros.\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/Nintendo64V2RomCollectionByGhostware/Super%20Smash%20Bros.%20%28USA%29.zip/Super%20Smash%20Bros.%20%28USA%29.n64\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/n64/smashbros.jpg?raw=true');"></div><div class="video-name">Super Smash Bros.</div><div class="video-view">N64</div></a>
+
+          </div>
+        </div>
+
+        <!-- Genesis Page -->
+        <div class="page genesis-page">
+          <div class="main-header anim" style="--delay: 0s">Sega Genesis Games</div>
+          
+          <!-- Big Ads -->
+          <div class="main-blogs">
+            <a href="#" class="main-blog anim genesis1" style="--delay: .1s">
+              <div class="main-blog__title">Sonic The Hedgehog 1</div>
+            </a>
+            <a href="#" class="main-blog anim genesis2" style="--delay: .2s">
+              <div class="main-blog__title">Virtua Racing</div>
+            </a>
+          </div>
+          <div class="small-header anim" style="--delay: .3s">Games</div>
+
+          <!-- Games -->
+          <div class="videos">
+            <!-- DO NOT REMOVE BELOW COMENT, THAT IS WHERE THE COMPILER INJECTS THE TITLES -->
+            <!--Genesis Games From Compiler-->
+<!--Dick Vitale's Awesome Baby College Hoops-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"segaMD\";EJS_gameName = \"dickvitalesawesomebabycollegehoops\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/SegaGenesisMegaDriveRomCollectionByGhostware/Dick%20Vitale%27s%20%27Awesome%2C%20Baby%21%27%20College%20Hoops%20%28USA%29.zip/Dick%20Vitale%27s%20%27Awesome%2C%20Baby%21%27%20College%20Hoops%20%28USA%29.md\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/gen/dickvitale.jpg?raw=true');"></div><div class="video-name">Dick Vitale's Awesome Baby College Hoops</div><div class="video-view">N64</div></a>
+<!--Sonic The Hedgehog 1-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"segaMD\";EJS_gameName = \"sonicthehedgehog1\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/SegaGenesisMegaDriveRomCollectionByGhostware/Sonic%20The%20Hedgehog%20%28USA%2C%20Europe%29.zip/Sonic%20The%20Hedgehog%20%28USA%2C%20Europe%29.md\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/gen/sonic1.jpg?raw=true');"></div><div class="video-name">Sonic The Hedgehog 1</div><div class="video-view">N64</div></a>
+<!--Sonic The Hedgehog 2-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"segaMD\";EJS_gameName = \"sonicthehedgehog2\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/SegaGenesisMegaDriveRomCollectionByGhostware/Sonic%20The%20Hedgehog%202%20%28World%29.zip/Sonic%20The%20Hedgehog%202%20%28World%29.md\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/gen/sonic2.jpg?raw=true');"></div><div class="video-name">Sonic The Hedgehog 2</div><div class="video-view">N64</div></a>
+<!--Sonic The Hedgehog 3-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"segaMD\";EJS_gameName = \"sonicthehedgehog3\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/SegaGenesisMegaDriveRomCollectionByGhostware/Sonic%20The%20Hedgehog%203%20%28USA%29.zip/Sonic%20The%20Hedgehog%203%20%28USA%29.md\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/gen/sonic3.jpg?raw=true');"></div><div class="video-name">Sonic The Hedgehog 3</div><div class="video-view">N64</div></a>
+<!--Sonic 3D Blast-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"segaMD\";EJS_gameName = \"sonic3dblast\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/SegaGenesisMegaDriveRomCollectionByGhostware/Sonic%203D%20Blast%20~%20Sonic%203D%20Flickies%27%20Island%20%28USA%2C%20Europe%29.zip/Sonic%203D%20Blast%20~%20Sonic%203D%20Flickies%27%20Island%20%28USA%2C%20Europe%29.md\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/gen/sonic3dblast.jpg?raw=true');"></div><div class="video-name">Sonic 3D Blast</div><div class="video-view">N64</div></a>
+<!--Streets Of Rage-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"segaMD\";EJS_gameName = \"streetsofrage\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/SegaGenesisMegaDriveRomCollectionByGhostware/Bare%20Knuckle%20-%20Ikari%20no%20Tetsuken%20~%20Streets%20of%20Rage%20%28World%29.zip/Bare%20Knuckle%20-%20Ikari%20no%20Tetsuken%20~%20Streets%20of%20Rage%20%28World%29.md\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/gen/streetsofrage.jpg?raw=true');"></div><div class="video-name">Streets Of Rage</div><div class="video-view">N64</div></a>
+<!--Virtua Racing-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"segaMD\";EJS_gameName = \"virtuaracing\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/SegaGenesisMegaDriveRomCollectionByGhostware/Virtua%20Racing%20%28USA%29.zip/Virtua%20Racing%20%28USA%29.md\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/gen/virtuaracing.jpg?raw=true');"></div><div class="video-name">Virtua Racing</div><div class="video-view">N64</div></a>
+
+          </div>
+        </div>
+
+        <!-- Gameboy Page -->
+        <div class="page gameboy-page">
+          <div class="main-header anim" style="--delay: 0s">Gameboy Games</div>
+          
+          <!-- Big Ads -->
+          <div class="main-blogs">
+            <a href="#" class="main-blog anim gameboy1" style="--delay: .1s">
+              <div class="main-blog__title">Pokemon Sapphire</div>
+            </a>
+            <a href="#" class="main-blog anim gameboy2" style="--delay: .2s">
+              <div class="main-blog__title">Tetris</div>
+            </a>
+          </div>
+          <div class="small-header anim" style="--delay: .3s">Games</div>
+
+          <!-- Games -->
+          <div class="videos">
+            <!-- DO NOT REMOVE BELOW COMENT, THAT IS WHERE THE COMPILER INJECTS THE TITLES -->
+            <!--Gameboy Games From Compiler-->
+<!--Super Mario Land-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"gb\";EJS_gameName = \"supermarioland\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/GameboyClassicRomCollectionByGhostware/Super%20Mario%20Land%20%28World%29%20%28Rev%20A%29.zip/Super%20Mario%20Land%20%28World%29%20%28Rev%20A%29.gb\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/gb/marioland.jpg?raw=true');"></div><div class="video-name">Super Mario Land</div><div class="video-view">Gameboy</div></a>
+<!--Super Mario Land 2-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"gb\";EJS_gameName = \"supermarioland2\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/game-boy-romset-ultra-us/Super%20Mario%20Land%202%20-%206%20Golden%20Coins%20%28USA%2C%20Europe%29%20%28Rev%202%29.zip/Super%20Mario%20Land%202%20-%206%20Golden%20Coins%20%28USA%2C%20Europe%29%20%28Rev%202%29.gb\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/gb/marioland2.jpg?raw=true');"></div><div class="video-name">Super Mario Land 2</div><div class="video-view">Gameboy</div></a>
+<!--Pokemon Blue-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"gb\";EJS_gameName = \"pokemonblue\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/game-boy-romset-ultra-us/Pokemon%20-%20Blue%20Version%20%28USA%2C%20Europe%29%20%28SGB%20Enhanced%29.zip/Pokemon%20-%20Blue%20Version%20%28USA%2C%20Europe%29%20%28SGB%20Enhanced%29.gb\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/gb/pokemonblue.jpg?raw=true');"></div><div class="video-name">Pokemon Blue</div><div class="video-view">Gameboy</div></a>
+<!--Pokemon Red-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"gb\";EJS_gameName = \"pokemonred\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/game-boy-romset-ultra-us/Pokemon%20-%20Red%20Version%20%28USA%2C%20Europe%29%20%28SGB%20Enhanced%29.zip/Pokemon%20-%20Red%20Version%20%28USA%2C%20Europe%29%20%28SGB%20Enhanced%29.gb\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/gb/pokemonred.jpg?raw=true');"></div><div class="video-name">Pokemon Red</div><div class="video-view">Gameboy</div></a>
+<!--Tetris-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"gb\";EJS_gameName = \"tetris\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/GameboyClassicRomCollectionByGhostware/Tetris%20%28World%29%20%28Rev%20A%29.zip/Tetris%20%28World%29%20%28Rev%20A%29.gb\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/gb/tetris.jpg?raw=true');"></div><div class="video-name">Tetris</div><div class="video-view">Gameboy</div></a>
+
+            <!-- DO NOT REMOVE BELOW COMENT, THAT IS WHERE THE COMPILER INJECTS THE TITLES -->
+            <!--Gameboy Advance Games From Compiler-->
+<!--Mario Kart Super Circuit-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"gba\";EJS_gameName = \"mariokartsupercircuit\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/GameboyAdvanceRomCollectionByGhostware/Mario%20Kart%20Super%20Circuit.zip/Mario%20Kart%20Super%20Circuit%20%28U%29%20%5B%21%5D.gba\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/gba/mariokartsupercircuit.jpg?raw=true');"></div><div class="video-name">Mario Kart Super Circuit</div><div class="video-view">Gameboy Advance</div></a>
+<!--Mario & Luigi: Superstar Saga-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"gba\";EJS_gameName = \"mario&luigi:superstarsaga\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/GameboyAdvanceRomCollectionByGhostware/Mario%20%26%20Luigi%20-%20Superstar%20Saga.zip/Mario%20%26%20Luigi%20-%20Superstar%20Saga%20%28U%29.gba\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/gba/mlsss.jpg?raw=true');"></div><div class="video-name">Mario & Luigi: Superstar Saga</div><div class="video-view">Gameboy Advance</div></a>
+<!--Monkeyball Jr.-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"gba\";EJS_gameName = \"monkeyballjr.\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/GameboyAdvanceRomCollectionByGhostware/Super%20Monkey%20Ball%20Jr.zip/Super%20Monkey%20Ball%20Jr%20%28U%29%20%5B%21%5D.gba\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/gba/monkeyballjr.png?raw=true');"></div><div class="video-name">Monkeyball Jr.</div><div class="video-view">Gameboy Advance</div></a>
+<!--Pokemon Ruby-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"gba\";EJS_gameName = \"pokemonruby\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/GameboyAdvanceRomCollectionByGhostware/Pokemon%20-%20Ruby%20Version%20%26%20Sapphire%20Version.zip/Pokemon%20-%20Ruby%20Version%20%28U%29%20%28V1.1%29.gba\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/gba/pokemonruby.jpg?raw=true');"></div><div class="video-name">Pokemon Ruby</div><div class="video-view">Gameboy Advance</div></a>
+<!--Pokemon Sapphire-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<div class=\"game\" id=\"game\"><\/div><script>EJS_player = \"#game\";EJS_core = \"gba\";EJS_gameName = \"pokemonsapphire\";EJS_pathtodata = \"https:\/\/rawcdn.githack.com\/ethanaobrien\/emulatorjs\/main\/data\/\";EJS_gameUrl = \"https:\/\/archive.org/download/GameboyAdvanceRomCollectionByGhostware/Pokemon%20-%20Ruby%20Version%20%26%20Sapphire%20Version.zip/Pokemon%20-%20Sapphire%20Version%20%28U%29%20%28V1.1%29.gba\";<\/script><script src=\"https:\/\/rawcdn.githack.com/ethanaobrien/emulatorjs/main/data/loader.js\"><\/script>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/gba/pokemonsaphire.jpg?raw=true');"></div><div class="video-name">Pokemon Sapphire</div><div class="video-view">Gameboy Advance</div></a>
+
+          </div>
+        </div>
+
+        <!-- Scratch Page -->
+        <div class="page scratch-page">
+          <div class="main-header anim" style="--delay: 0s">Scratch Games</div>
+          
+          <!-- Big Ads -->
+          <div class="main-blogs">
+            <a href="#" class="main-blog anim scratch1" style="--delay: .1s">
+              <div class="main-blog__title">Geometry Dash</div>
+            </a>
+            <a href="#" class="main-blog anim scratch2" style="--delay: .2s">
+              <div class="main-blog__title">Paper Minecraft</div>
+            </a>
+          </div>
+          <div class="small-header anim" style="--delay: .3s">Games</div>
+
+          <!-- Games -->
+          <div class="videos">
+            <!-- DO NOT REMOVE BELOW COMENT, THAT IS WHERE THE COMPILER INJECTS THE TITLES -->
+            <!--Flash Scratch From Compiler-->
+<!--[3D]ボールころころ2-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/turbowarp.org\/135170508\/embed\" frameborder=\"0\" allowfullscreen></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/scratch/ball3d.png?raw=true');"></div><div class="video-name">[3D]ボールころころ2</div><div class="video-view">Scratch</div></a>
+<!--Geometry Dash-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/turbowarp.org\/105500895\/embed\" frameborder=\"0\" allowfullscreen></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/scratch/geometrydash.png?raw=true');"></div><div class="video-name">Geometry Dash</div><div class="video-view">Scratch</div></a>
+<!--Paper Minecraft-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/turbowarp.org\/10128407\/embed\" frameborder=\"0\" allowfullscreen></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/scratch/paperminecraft.png?raw=true');"></div><div class="video-name">Paper Minecraft</div><div class="video-view">Scratch</div></a>
+<!--Hill Climb Racing-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/turbowarp.org\/56667360\/embed\" frameborder=\"0\" allowfullscreen></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/scratch/hillclimbracing.png?raw=true');"></div><div class="video-name">Hill Climb Racing</div><div class="video-view">Scratch</div></a>
+<!--Flappy Bird-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/turbowarp.org\/17828009\/embed\" frameborder=\"0\" allowfullscreen></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/scratch/flappybird.png?raw=true');"></div><div class="video-name">Flappy Bird</div><div class="video-view">Scratch</div></a>
+<!--Flip 3D-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/turbowarp.org\/430999356\/embed\" frameborder=\"0\" allowfullscreen></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/scratch/flip3d.png?raw=true');"></div><div class="video-name">Flip 3D</div><div class="video-view">Scratch</div></a>
+<!--Appel-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/turbowarp.org\/60917032\/embed\" frameborder=\"0\" allowfullscreen></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/scratch/appel.jpg?raw=true');"></div><div class="video-name">Appel</div><div class="video-view">Scratch</div></a>
+<!--Five Nights At Freddy's-->
+<a href="#" onclick='$(".page").hide(); $(".game-page").show(); $(".game-page").html("<iframe style=\"aspect-ratio: 4/3; height:100%;\" src=\"https:\/\/turbowarp.org\/217819833\/embed\" frameborder=\"0\" allowfullscreen></iframe>")' class="video anim" style="--delay: .4s"><div class="video-wrapper" style="background-image: url('https://github.com/TeamNitrous/projectplatinum/blob/main/assets/games/scratch/fnaf.png?raw=true');"></div><div class="video-name">Five Nights At Freddy's</div><div class="video-view">Scratch</div></a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Javascript Area -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script src='https://vjs.zencdn.net/5-unsafe/video.js'></script>
+    <!-- Script -->
+    <script>
+
+      $(document).ready(function() {
+        $(".page").hide();
+        $(".home-page").show();
+      });
+
+      $(function () {
+        $(".sidebar-link").click(function () {
+          $(".sidebar-link").removeClass("is-active");
+          $(this).addClass("is-active");
+        });
+      });
+
+      $(window)
+      .resize(function () {
+        if ($(window).width() > 1090) {
+        $(".sidebar").removeClass("collapse");
+        } else {
+        $(".sidebar").addClass("collapse");
+        }
+      })
+      .resize();
+
+      $(function () {
+        //open home
+        $(".logo, .logo-expand, .home").on("click", function (e) {
+          location.reload();//to fix games reloading
+        });
+        
+        //open flash
+        $(".flash").on("click", function (e) {
+          //universal page swapping code
+          $(".game-page").html("<h1>how did you get here?</h1>");
+          $(".page").hide();
+          $(".main-container").scrollTop(0);
+          
+          //swap to page we want
+          $(".flash-page").show();
+        });
+
+        //open html
+        $(".html").on("click", function (e) {
+          //universal page swapping code
+          $(".game-page").html("<h1>how did you get here?</h1>");
+          $(".page").hide();
+          $(".main-container").scrollTop(0);
+          
+          //swap to page we want
+          $(".html-page").show();
+        });
+
+        //open nes
+        $(".nes").on("click", function (e) {
+          //universal page swapping code
+          $(".game-page").html("<h1>how did you get here?</h1>");
+          $(".page").hide();
+          $(".main-container").scrollTop(0);
+          
+          //swap to page we want
+          $(".nes-page").show();
+        });
+
+        //open snes
+        $(".snes").on("click", function (e) {
+          //universal page swapping code
+          $(".game-page").html("<h1>how did you get here?</h1>");
+          $(".page").hide();
+          $(".main-container").scrollTop(0);
+          
+          //swap to page we want
+          $(".snes-page").show();
+        });
+
+        //open n64
+        $(".n64").on("click", function (e) {
+          //universal page swapping code
+          $(".game-page").html("<h1>how did you get here?</h1>");
+          $(".page").hide();
+          $(".main-container").scrollTop(0);
+          
+          //swap to page we want
+          $(".n64-page").show();
+        });
+
+        //open genesis
+        $(".genesis").on("click", function (e) {
+          //universal page swapping code
+          $(".game-page").html("<h1>how did you get here?</h1>");
+          $(".page").hide();
+          $(".main-container").scrollTop(0);
+          
+          //swap to page we want
+          $(".genesis-page").show();
+        });
+
+        //open gameboy
+        $(".gameboy").on("click", function (e) {
+          //universal page swapping code
+          $(".game-page").html("<h1>how did you get here?</h1>");
+          $(".page").hide();
+          $(".main-container").scrollTop(0);
+          
+          //swap to page we want
+          $(".gameboy-page").show();
+        });
+
+        //open scratch
+        $(".scratch").on("click", function (e) {
+          //universal page swapping code
+          $(".game-page").html("<h1>how did you get here?</h1>");
+          $(".page").hide();
+          $(".main-container").scrollTop(0);
+          
+          //swap to page we want
+          $(".scratch-page").show();
+        });
+      });
+    </script>
+  </body>
+</html>
